@@ -1,0 +1,47 @@
+EMILA
+- repo, struktura, podzial pracy
+- Zabezpieczenie i konfiguracja backendu - biblioteki, logi, limitery itp
+- pliki env, ciasteczka, tokeny, node env production
+- wdrozenie na linuksie - apache, baza, backend jako usluga systemowa
+- htaccess, sitemap, manifest json, json ld, robots txt, index html
+- domena, google search console, rekord TXT
+- tunelowanie cloudflare
+- baza danych cala + config/db.js
+- gitignore x2
+- autoryzacja - modele, endpointy, middleware, api.js
+- uploadmiddleware
+- server.js, app.js, api.js
+- protected route
+- routes.jsx
+- integracja z fb - backend i front
+
+JULA
+- loader
+- forms
+- czcionki, kolory, variables
+- confirm dialog
+- pagination
+- alert
+- nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
+- mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
+- modal
+- image upload
+- dodawanie miotów u admina
+- dodawanie naszych zwierząt u admina
+
+KRZYSIEK
+- 404
+- stopka
+- header
+- button
+- errorstate
+- logo, favicon
+- og image
+- zakładka o nas
+- zakładka mioty front + wykorzystanie integracji z api.js
+- zakładka nasze zwierzęta front + wykorzystanie integracji z api.js
+- homepage
+- logowanie admina front + wykorzystanie integracji z api.js
+- admin layout
+- admin dashboard
+- scroll to top + uzyć w app.jsx
