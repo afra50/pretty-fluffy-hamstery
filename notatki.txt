@@ -1,5 +1,4 @@
 EMILA
-- repo, struktura, podzial pracy
 - Zabezpieczenie i konfiguracja backendu - biblioteki, logi, limitery itp
 - pliki env, ciasteczka, tokeny, node env production
 - wdrozenie na linuksie - apache, baza, backend jako usluga systemowa
@@ -7,27 +6,27 @@ EMILA
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
 - baza danych cala + config/db.js
-- gitignore x2
 - autoryzacja - modele, endpointy, middleware, api.js
 - uploadmiddleware
 - server.js, app.js, api.js
 - protected route
 - routes.jsx
 - integracja z fb - backend i front
+- zakładka poradnik
+- zakładka jak zostać opiekunem
 
 JULA
-- loader
 - forms
 - czcionki, kolory, variables
-- confirm dialog
-- pagination
-- alert
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - modal
 - image upload
 - dodawanie miotów u admina
 - dodawanie naszych zwierząt u admina
+- logowanie admina front + wykorzystanie integracji z api.js
+- admin layout
+- admin dashboard
 
 KRZYSIEK
 - 404
@@ -41,7 +40,17 @@ KRZYSIEK
 - zakładka mioty front + wykorzystanie integracji z api.js
 - zakładka nasze zwierzęta front + wykorzystanie integracji z api.js
 - homepage
-- logowanie admina front + wykorzystanie integracji z api.js
-- admin layout
-- admin dashboard
+- confirm dialog
+- pagination
+- alert
 - scroll to top + uzyć w app.jsx
+- loader
+
+
+ZAKŁADKI
+- homepage
+- o nas
+- mioty
+- nasze zwierzęta
+- poradnik
+- jak zostać opiekunem
