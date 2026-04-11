@@ -5,7 +5,6 @@ EMILA
 - htaccess, sitemap, manifest json, json ld, robots txt, index html
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
-- baza danych cala + config/db.js
 - autoryzacja - modele, endpointy, middleware, api.js
 - uploadmiddleware
 - server.js, app.js, api.js
