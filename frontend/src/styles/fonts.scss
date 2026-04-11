@@ -1,0 +1,29 @@
+// --- COOKIE (Czcionka ozdobna, ma tylko jedną grubość) ---
+@font-face {
+  font-family: "Cookie";
+  src: url("../assets/fonts/Cookie/Cookie-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+// --- NUNITO (Czcionka nagłówkowa, plik Variable - obsługuje różne grubości) ---
+@font-face {
+  font-family: "Nunito";
+  src: url("../assets/fonts/Nunito/Nunito-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 200 1000; // Zakres grubości wspierany przez plik Variable
+  font-style: normal;
+  font-display: swap;
+}
+
+// --- OPEN SANS (Czcionka do tekstu, plik Variable) ---
+@font-face {
+  font-family: "Open Sans";
+  // Zwróć uwagę, by nazwa pliku dokładnie zgadzała się z tym, co pobrałaś!
+  src: url("../assets/fonts/OpenSans/OpenSans-VariableFont_wdth,wght.ttf")
+    format("truetype");
+  font-weight: 300 800; // Zakres grubości
+  font-style: normal;
+  font-display: swap;
+}

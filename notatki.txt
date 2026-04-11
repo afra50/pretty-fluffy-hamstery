@@ -17,7 +17,6 @@ EMILA
 
 JULA
 - forms
-- czcionki, kolory, variables
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - modal
