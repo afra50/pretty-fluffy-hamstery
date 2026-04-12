@@ -1,0 +1,217 @@
+@use "../variables" as *;
+
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	background-color: $color-white;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+	width: 100%;
+	transition: all 0.3s ease;
+
+	.header_container {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 10px; // <-- Ucięte do 10px
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 130px;
+
+		@media (min-width: 2500px) {
+			max-width: 1800px;
+		}
+
+		@media (max-width: 992px) {
+			height: 100px;
+			padding: 0 8px; // <-- Ucięte do 8px na mobile
+		}
+	}
+
+	// --- LOGO (NIETYKALNE) ---
+	.header_logo {
+		flex-shrink: 0;
+		z-index: 1002;
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		text-decoration: none;
+		transition: transform 0.3s ease;
+
+		&:hover {
+			transform: scale(1.03);
+		}
+
+		img {
+			height: 90px;
+			display: block;
+			@media (max-width: 992px) {
+				height: 70px;
+			}
+			@media (max-width: 480px) {
+				height: 55px;
+			}
+		}
+
+		.header_logo_text {
+			font-family: $font-accent;
+			font-size: 1.7rem;
+			color: $color-secondary;
+			line-height: 1;
+			letter-spacing: 3px;
+			white-space: nowrap;
+
+			@media (max-width: 1250px) {
+				font-size: 1.4rem;
+				letter-spacing: 1px;
+			}
+			@media (max-width: 992px) {
+				font-size: 1.8rem;
+				letter-spacing: 3px;
+			}
+			@media (max-width: 480px) {
+				font-size: 1.4rem;
+				max-width: 150px;
+				line-height: 1.2;
+				white-space: normal;
+			}
+		}
+	}
+
+	// --- NAWIGACJA MOBILNA ---
+	.header_nav {
+		display: flex;
+		align-items: center;
+
+		@media (max-width: 992px) {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100vh;
+			background-color: $color-white;
+			flex-direction: column;
+			justify-content: center;
+			z-index: 1001;
+
+			visibility: hidden;
+			opacity: 0;
+			transform: translateX(100%);
+			transition:
+				transform 0.4s ease-in-out,
+				visibility 0.4s,
+				opacity 0.4s;
+
+			&.header_nav_active {
+				visibility: visible;
+				opacity: 1;
+				transform: translateX(0);
+			}
+		}
+	}
+
+	.header_menu {
+		display: flex;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		gap: 10px;
+
+		@media (max-width: 1250px) {
+			gap: 5px;
+		}
+		@media (max-width: 992px) {
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+			gap: 25px;
+		}
+	}
+
+	.header_item {
+		@media (max-width: 992px) {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	// --- TWOJA WODA (NIETYKALNA) ---
+	.header_link {
+		font-family: $font-heading;
+		font-size: 1.1rem;
+		font-weight: 500;
+		color: $color-secondary;
+		text-decoration: none;
+		padding: 8px 20px;
+		display: block;
+		position: relative;
+		z-index: 1;
+		border-radius: 50px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-align: center;
+
+		transition:
+			color 0.5s ease,
+			transform 0.5s ease;
+
+		@media (max-width: 1250px) {
+			padding: 8px 12px;
+			font-size: 1rem;
+		}
+		@media (max-width: 992px) {
+			font-size: 1.8rem;
+			padding: 15px;
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: $color-accent;
+			z-index: -1;
+			transform: translateY(102%);
+			border-radius: 50% 50% 0 0;
+			transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+		}
+
+		&:hover,
+		&.active {
+			color: $color-white;
+			&::before {
+				transform: translateY(0);
+				border-radius: 0;
+			}
+		}
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+	}
+
+	// --- BURGER (STABILNY) ---
+	.header_burger {
+		display: none;
+		background: none;
+		border: none;
+		font-size: 2.2rem;
+		color: $color-secondary;
+		cursor: pointer;
+		z-index: 1002;
+		padding: 10px;
+
+		@media (max-width: 992px) {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		&:hover {
+			color: $color-accent;
+		}
+	}
+}
