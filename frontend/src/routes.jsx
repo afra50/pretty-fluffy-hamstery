@@ -1,6 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
+import PurchaseProcess from "./pages/PurchaseProcess";
+
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = [
@@ -8,6 +10,7 @@ const routes = [
   // 🌍 CZĘŚĆ PUBLICZNA
   // ==========================================
   //   { path: "/", element: <Home /> },
+  { path: "/jak-zostac-opiekunem", element: <PurchaseProcess /> },
   //   { path: "*", element: <NotFound /> },
   // ==========================================
   // 🔐 CZĘŚĆ ADMINA

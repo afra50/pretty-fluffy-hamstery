@@ -1,0 +1,389 @@
+@use "../variables" as *;
+@use "sass:color";
+
+.process-page {
+    background-color: $color-white;
+    color: $color-text-main;
+    font-family: $font-body;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+
+    &.fade-in-active {
+        opacity: 1;
+    }
+
+    // --- BANNER ---
+    .hero-banner {
+        position: relative;
+        // Wysokość baneru płynnie rośnie od 300px do 500px
+        height: clamp(300px, 40vh, 500px);
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .banner-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba($color-text-main, 0.6), rgba($color-secondary, 0.4));
+            z-index: 2;
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: $color-white;
+            padding: 0 20px;
+            animation: slideDown 0.8s ease-out;
+
+            .title {
+                font-family: $font-heading;
+                // Tytuł: od 2.2rem na mobile do 4rem na desktopie
+                font-size: clamp(2.2rem, 8vw, 4rem);
+                margin: 0;
+                line-height: 1.1;
+            }
+
+            .subtitle {
+                font-family: $font-accent;
+                // Podtytuł: od 1.6rem do 2.8rem
+                font-size: clamp(1.6rem, 5vw, 2.8rem);
+                color: $color-primary;
+                margin: 10px 0 0 0;
+            }
+        }
+    }
+
+    // --- CONTENT WRAPPER ---
+    .process-content-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        // Odstępy pionowe płynnie rosną od 40px do 100px
+        padding: clamp(40px, 8vw, 100px) 20px;
+    }
+
+    // --- INTRO ---
+    .intro-section {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto clamp(40px, 6vw, 80px) auto;
+
+        h2 {
+            font-family: $font-heading;
+            color: $color-secondary;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 25px;
+        }
+
+        p {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            line-height: 1.7;
+            color: color.adjust($color-text-main, $lightness: 15%);
+        }
+    }
+
+    // --- STEPS GRID ---
+    .steps-grid {
+        display: grid;
+        // Na dużych ekranach wymuszamy 4 kolumny (2 rzędy po 4)
+        grid-template-columns: repeat(4, 1fr);
+        gap: clamp(20px, 3vw, 30px);
+        margin-bottom: clamp(60px, 10vw, 100px);
+
+        // Tablet: 2 kolumny (4 rzędy po 2) - nadal idealnie równo
+        @media (max-width: 1100px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        // Mobile: 1 kolumna
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+
+        .step-card {
+            background: $color-white;
+            border: 1px solid rgba($color-primary, 0.3);
+            border-radius: 20px;
+            // Zmniejszamy nieco padding boczny przy 4 kolumnach
+            padding: clamp(30px, 5vw, 45px) 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUpFade 0.6s ease-out forwards;
+
+            &:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 15px 35px rgba($color-secondary, 0.1);
+                border-color: $color-primary;
+
+                .step-icon {
+                    background-color: $color-primary;
+                    color: $color-white;
+                    transform: scale(1.05);
+                }
+            }
+
+            .step-number {
+                position: absolute;
+                top: -18px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 36px;
+                height: 36px;
+                background-color: $color-secondary;
+                color: $color-white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: $font-heading;
+                font-weight: bold;
+                font-size: 0.9rem;
+            }
+
+            .step-icon {
+                width: 70px;
+                height: 70px;
+                margin: 0 auto 25px;
+                background-color: rgba($color-primary, 0.1);
+                color: $color-secondary;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: 0.3s;
+
+                svg {
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+
+            h3 {
+                font-family: $font-heading;
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+                color: $color-text-main;
+            }
+
+            p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: color.adjust($color-text-main, $lightness: 20%);
+            }
+
+            .step-link {
+                color: $color-accent;
+                font-weight: 600;
+                text-decoration: none;
+                display: inline-block;
+                margin-top: 20px;
+                font-size: 0.9rem;
+                transition: transform 0.2s ease;
+
+                &:hover {
+                    transform: translateX(5px);
+                }
+            }
+        }
+    }
+
+    // --- FAQ SECTION ---
+    .faq-section {
+        margin: 0 auto; // <--- DODAJ TO (0 góra, auto boki, clamp dół)
+        max-width: 850px;
+
+        h2 {
+            text-align: center;
+            font-family: $font-heading;
+            color: $color-secondary;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: clamp(30px, 5vw, 50px);
+        }
+
+        .faq-item {
+            border: 1px solid rgba($color-primary, 0.4);
+            border-radius: 16px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+
+            &:hover {
+                background-color: rgba($color-primary, 0.03);
+            }
+
+            &.open {
+                border-color: $color-secondary;
+
+                .faq-answer {
+                    max-height: 400px;
+                    padding: 0 25px 25px;
+                    opacity: 1;
+                }
+
+                .faq-question h4 {
+                    color: $color-secondary;
+                }
+
+                .icon {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .faq-question {
+                padding: 22px 25px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                h4 {
+                    margin: 0;
+                    font-family: $font-heading;
+                    font-size: clamp(1rem, 2vw, 1.15rem);
+                }
+
+                .icon {
+                    color: $color-accent;
+                    font-weight: bold;
+                    transition: transform 0.3s ease;
+                }
+            }
+
+            .faq-answer {
+                max-height: 0;
+                opacity: 0;
+                overflow: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+                p {
+                    margin: 0;
+                    line-height: 1.7;
+                    color: color.adjust($color-text-main, $lightness: 15%);
+                }
+            }
+        }
+    }
+
+    // --- FULL WIDTH CTA ---
+    .cta-modern-minimal {
+        position: relative;
+        width: 100%;
+
+        // Zmniejszamy paddingi: było 100-180px, teraz dajemy 60-100px
+        padding: clamp(60px, 8vw, 100px) 0;
+
+        // Zmniejszamy min-height: było 450-650px, teraz wystarczy 300-450px
+        min-height: clamp(300px, 40vh, 450px);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: $color-bg-light;
+        background-image: url('../../assets/purchase-cta.webp');
+        background-size: cover;
+        background-position: center;
+
+        .cta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            // Przesuwamy punkt startu gradientu, żeby był bardziej zwarty
+            background: linear-gradient(to right,
+                    rgba($color-bg-light, 1) 40%,
+                    rgba($color-bg-light, 0.4) 100%);
+            z-index: 1;
+
+            @media (max-width: 992px) {
+                background: rgba($color-bg-light, 0.94);
+            }
+        }
+
+        .cta-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 90%;
+            display: flex;
+            justify-content: flex-start;
+
+            @media (max-width: 992px) {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        .cta-content {
+            max-width: 580px; // Nieco węższy blok tekstu
+
+            .cta-top-text {
+                font-family: $font-body;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-size: 0.8rem; // Zmniejszony
+                color: $color-accent; // Twój róż dla delikatności
+                font-weight: 700;
+                display: block;
+                margin-bottom: 12px;
+            }
+
+            .cta-heading {
+                font-family: $font-accent;
+                color: $color-secondary; // Ciemny morski dla kontrastu
+                // Zmniejszony nagłówek (było 2.8-4.8, dajemy 2.2-3.5)
+                font-size: clamp(2.2rem, 5vw, 3.5rem);
+                line-height: 1.1;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-family: $font-body;
+                color: $color-text-main;
+                font-size: clamp(1rem, 1.5vw, 1.1rem); // Subtelniejszy tekst
+                line-height: 1.7;
+                margin-bottom: 35px; // Mniejszy odstęp przed guzikiem
+            }
+        }
+    }
+}
+
+// --- ANIMACJE I KLUCZE ---
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

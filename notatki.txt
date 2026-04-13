@@ -12,7 +12,10 @@ EMILA
 - routes.jsx
 - integracja z fb - backend i front
 - zakładka poradnik
-- zakładka jak zostać opiekunem
+- komponent do scrollowania do gory
+1. jak zostac opiekunem
+    - rwd zweryfikowac
+
 
 JULA
 - forms
@@ -30,7 +33,7 @@ KRZYSIEK
 - 404
 - stopka
 - header
-- button
+- button zweryfikowac i poprawic
 - errorstate
 - logo, favicon
 - og image
