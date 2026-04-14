@@ -12,11 +12,6 @@ EMILA
 - routes.jsx
 - integracja z fb - backend i front
 - komponent do scrollowania do gory
-1. poradnik
-    - style poprawic
-    - responsywnosc
-    - zawartosc
-    - po kliknieciu na rozdzial/podrozdzial scrolluje troche za nisko
 
 JULA
 - forms

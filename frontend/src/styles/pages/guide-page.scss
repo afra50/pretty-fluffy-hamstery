@@ -1,16 +1,15 @@
 @use "../variables" as *;
 @use "sass:color";
 
-
 // Główny kontener flexbox
 .unusual-guide-page {
     display: flex;
     align-items: flex-start;
-    max-width: 1400px; // Zmniejszony max-width dla lepszych proporcji
+    max-width: 1400px;
     margin: 0 auto;
     position: relative;
     background-color: $color-white;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 
     @media (max-width: 1100px) {
         flex-direction: column;
@@ -18,27 +17,32 @@
 
     // --- LEWA STRONA: MENU Z PODROZDZIAŁAMI ---
     .sticky-intro {
-        flex: 0 0 clamp(260px, 22vw, 340px); // Węższy sidebar
-        height: 100vh;
+        flex: 0 0 clamp(260px, 22vw, 340px);
+        height: calc(100vh - 130px);
         position: sticky;
-        top: 0;
+        top: 130px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+
+        // --- ZMIANA TUTAJ: było 'center', zmieniamy na 'flex-start' ---
+        justify-content: flex-start;
+
         background-color: rgba($color-primary, 0.15);
-        padding: 30px;
+        padding: 40px 30px; // Dodałem 40px z góry, żeby nie przyklejało się do samego sufitu
         border-right: 1px solid rgba($color-primary, 0.2);
         z-index: 10;
-        overflow-y: auto; // Na wypadek gdyby spisu treści było dużo
+        overflow-y: auto;
 
         @media (max-width: 1100px) {
             position: relative;
             height: auto;
+            top: 0; // Resetujemy top dla mobile
             width: 100%;
             flex: none;
             padding: 40px 20px;
             border-right: none;
             border-bottom: 1px solid rgba($color-primary, 0.2);
+            overflow-y: visible;
         }
 
         .intro-content {
@@ -47,27 +51,27 @@
                 text-transform: uppercase;
                 letter-spacing: 2px;
                 font-weight: 700;
-                font-size: 0.7rem; // Zmniejszony
+                font-size: 0.7rem;
                 display: block;
                 margin-bottom: 10px;
             }
 
             .main-title {
                 font-family: $font-heading;
-                font-size: clamp(1.8rem, 2.5vw, 2.2rem); // Mniejszy nagłówek
+                font-size: clamp(1.8rem, 2.5vw, 2.2rem);
                 color: $color-secondary;
                 margin: 0 0 15px;
                 line-height: 1.15;
             }
 
             .description {
-                font-size: 0.9rem; // Zmniejszony opis
+                font-size: 0.9rem;
                 line-height: 1.6;
                 color: color.adjust($color-text-main, $lightness: 10%);
                 margin-bottom: 30px;
             }
 
-            // MENU Z PODROZDZIAŁAMI
+            // MENU BOKU Z PODROZDZIAŁAMI
             .guide-nav {
                 display: flex;
                 flex-direction: column;
@@ -82,7 +86,7 @@
                     display: flex;
                     align-items: center;
                     gap: 12px;
-                    padding: 8px 10px; // Ciaśniejszy padding
+                    padding: 8px 10px;
                     text-decoration: none;
                     border-radius: 8px;
                     transition: all 0.3s ease;
@@ -108,7 +112,7 @@
                 .nav-sub-items {
                     display: flex;
                     flex-direction: column;
-                    padding-left: 35px; // Wcięcie dla podrozdziałów
+                    padding-left: 35px;
                     margin-top: 5px;
                     gap: 6px;
 
@@ -140,11 +144,14 @@
     // --- PRAWA STRONA: TREŚĆ ---
     .main-guide-content {
         flex: 1;
-        padding: clamp(40px, 6vw, 80px) clamp(30px, 5vw, 60px); // Mniejsze paddingi
+        padding: clamp(40px, 6vw, 80px) clamp(30px, 5vw, 60px);
 
         .guide-chapter {
             margin-bottom: clamp(60px, 8vw, 100px);
-            max-width: 800px; // Ograniczenie szerokości by linie tekstu nie były za długie
+            max-width: 800px;
+
+            // <-- ZMIANA: Wysokość headera (130) + 20px "oddechu" = 150px
+            scroll-margin-top: 150px;
 
             .chapter-header {
                 margin-bottom: 35px;
@@ -153,7 +160,7 @@
 
                 .chapter-number {
                     font-family: $font-accent;
-                    font-size: 1.8rem; // Zmniejszony
+                    font-size: 1.8rem;
                     color: $color-accent;
                     display: block;
                     margin-bottom: 5px;
@@ -161,13 +168,13 @@
 
                 h2 {
                     font-family: $font-heading;
-                    font-size: clamp(1.8rem, 3vw, 2.4rem); // Zmniejszony
+                    font-size: clamp(1.8rem, 3vw, 2.4rem);
                     color: $color-secondary;
                     margin: 0 0 10px 0;
                 }
 
                 .lead-text {
-                    font-size: 1.05rem; // Zmniejszony
+                    font-size: 1.05rem;
                     color: color.adjust($color-text-main, $lightness: 10%);
                     line-height: 1.6;
                     margin: 0;
@@ -176,7 +183,7 @@
 
             .chapter-body {
                 color: $color-text-main;
-                font-size: 1rem; // Zmniejszony bazowy font
+                font-size: 1rem;
                 line-height: 1.7;
 
                 p {
@@ -184,7 +191,10 @@
                 }
 
                 .sub-chapter {
-                    margin-bottom: 45px; // Mniejszy odstęp między podrozdziałami
+                    margin-bottom: 45px;
+
+                    // <-- ZMIANA: Wysokość headera (130) + 20px oddechu
+                    scroll-margin-top: 150px;
 
                     .sub-chapter-header {
                         display: flex;
@@ -204,7 +214,7 @@
 
                         h3 {
                             font-family: $font-heading;
-                            font-size: 1.4rem; // Zmniejszony nagłówek podrozdziału
+                            font-size: 1.4rem;
                             color: $color-secondary;
                             margin: 0;
                         }
@@ -255,7 +265,6 @@
                             }
                         }
 
-                        //... (kolory good/bad tak jak poprzednio, ale fonty mniejsze)
                         .good-box {
                             background: rgba($color-primary, 0.1);
                             border: 1px solid rgba($color-primary, 0.3);
@@ -294,7 +303,7 @@
                     .feature-block-home {
                         position: relative;
                         width: 100%;
-                        height: 250px; // Dużo niższy obrazek tła
+                        height: 250px;
                         border-radius: 16px;
                         overflow: hidden;
                         display: flex;
@@ -409,6 +418,81 @@
                     }
                 }
             }
+        }
+    }
+}
+
+// --- CTA NA PEŁNĄ SZEROKOŚĆ (POZA FLEXBOXEM) ---
+.guide-cta {
+    position: relative;
+    width: 100%;
+    padding: clamp(60px, 8vw, 100px) 0;
+    min-height: clamp(250px, 30vh, 350px);
+    margin-top: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-bg-light;
+    background-image: url('../../assets/purchase-cta.webp');
+    background-size: cover;
+    background-position: center;
+
+    .cta-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, rgba($color-white, 0.95) 30%, rgba($color-white, 0.4) 100%);
+        z-index: 1;
+
+        @media (max-width: 992px) {
+            background: rgba($color-white, 0.9);
+        }
+    }
+
+    .cta-container {
+        position: relative;
+        z-index: 2;
+        max-width: 1200px;
+        width: 90%;
+        display: flex;
+        justify-content: flex-start;
+
+        @media (max-width: 992px) {
+            justify-content: center;
+            text-align: center;
+        }
+    }
+
+    .cta-content {
+        max-width: 550px;
+
+        .cta-top-text {
+            font-family: $font-body;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: $color-accent;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .cta-heading {
+            font-family: $font-accent;
+            color: $color-secondary;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-family: $font-body;
+            color: $color-text-main;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
         }
     }
 }
