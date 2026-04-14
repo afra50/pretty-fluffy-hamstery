@@ -14,14 +14,13 @@ EMILA
 - komponent do scrollowania do gory
 
 JULA
-- forms
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - modal
 - image upload
 - dodawanie miotów u admina
 - dodawanie naszych zwierząt u admina
-- logowanie admina front + wykorzystanie integracji z api.js
+- logowanie admina - wykorzystanie integracji z api.js + alert
 - admin layout
 - admin dashboard
 

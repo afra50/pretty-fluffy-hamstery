@@ -4,6 +4,8 @@ import { Navigate } from "react-router-dom";
 import PurchaseProcess from "./pages/PurchaseProcess";
 import GuidePage from "./pages/GuidePage";
 
+import Login from "./pages/admin/Login";
+
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = [
@@ -17,7 +19,7 @@ const routes = [
   // ==========================================
   // 🔐 CZĘŚĆ ADMINA
   // ==========================================
-  //   { path: "/admin/login", element: <Login /> },
+  { path: "/admin/login", element: <Login /> },
   //   {
   //     path: "/admin",
   //     element: (

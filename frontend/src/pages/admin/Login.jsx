@@ -1,0 +1,97 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// Usunięto import authApi
+import Button from "../../components/ui/Button";
+import { FaPaw } from "react-icons/fa";
+import "../../styles/forms.scss";
+import "../../styles/pages/admin/login.scss";
+
+const Login = () => {
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    // Tymczasowa symulacja logowania (1 sekunda opóźnienia)
+    setTimeout(() => {
+      setIsLoading(false);
+
+      // Dopóki nie ma backendu, wpuszczamy każdego kto cokolwiek wpisze :)
+      navigate("/admin");
+    }, 1000);
+  };
+
+  return (
+    <div className="admin-login">
+      <div className="admin-login__card">
+        <div className="admin-login__header">
+          <FaPaw className="paw-icon" />
+          <h1>Panel Hodowcy</h1>
+          <p>Witaj z powrotem w hodowli</p>
+        </div>
+
+        <form className="admin-login__form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-group__label" htmlFor="username">
+              Użytkownik
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              className="form-group__input"
+              placeholder="Wpisz login"
+              value={credentials.username}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-group__label" htmlFor="password">
+              Hasło
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              className="form-group__input"
+              placeholder="••••••••"
+              value={credentials.password}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          {error && <p className="form-error">{error}</p>}
+
+          <Button
+            type="submit"
+            variant="primary"
+            className="admin-login__submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Logowanie..." : "Zaloguj się"}
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;

@@ -1,0 +1,94 @@
+@use "../../variables" as *;
+@use "sass:color";
+
+.admin-login {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-bg-light; // Ciepły krem z variables
+
+  // Dodajemy delikatne pastelowe plamy w tle (błękitna u góry, różowa na dole)
+  background-image:
+    radial-gradient(
+      circle at 10% 20%,
+      rgba($color-primary, 0.3),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba($color-accent, 0.15),
+      transparent 40%
+    );
+  padding: 20px;
+
+  &__card {
+    background-color: $color-white;
+    width: 100%;
+    max-width: 440px;
+    border-radius: 24px; // Mocne zaokrąglenia, jak w poradniku
+    padding: clamp(30px, 5vw, 50px);
+    box-shadow: 0 25px 50px rgba($color-secondary, 0.08); // Delikatny, bardzo rozmyty cień
+    border: 1px solid rgba($color-primary, 0.3);
+
+    // Animacja wejścia z variables
+    opacity: 0;
+    animation: slideUpFadeLogin 0.8s ease-out forwards;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 35px;
+
+    .paw-icon {
+      color: $color-accent; // Pudrowy róż
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+      animation: bounceSoft 2s infinite ease-in-out;
+    }
+
+    h1 {
+      font-family: $font-heading; // Comfortaa
+      color: $color-secondary; // Ciemny morski
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 5px 0;
+    }
+
+    p {
+      font-family: $font-accent; // Cookie (odręczna)
+      color: $color-accent;
+      font-size: 1.8rem;
+      margin: 0;
+    }
+  }
+
+  &__submit {
+    width: 100%; // Przycisk na pełną szerokość formularza
+    margin-top: 15px;
+    padding: 14px;
+    font-size: 1.1rem;
+  }
+}
+
+// --- ANIMACJE LOKALNE ---
+@keyframes slideUpFadeLogin {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}

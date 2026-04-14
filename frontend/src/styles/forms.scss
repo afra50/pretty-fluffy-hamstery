@@ -1,0 +1,73 @@
+@use "./variables" as *;
+@use "sass:color";
+
+.form-group {
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+
+  &__label {
+    font-family: $font-body;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $color-secondary; // Ciemny morski
+    margin-bottom: 8px;
+    margin-left: 4px;
+    transition: color 0.3s ease;
+  }
+
+  &__input {
+    font-family: $font-body;
+    font-size: 1rem;
+    color: $color-text-main;
+    background-color: $color-white;
+    border: 2px solid rgba($color-primary, 0.5); // Jasno błękitna ramka
+    border-radius: 14px; // Miękkie, obłe kąty
+    padding: 14px 18px;
+    transition: all 0.3s ease;
+    outline: none;
+
+    &::placeholder {
+      color: color.adjust($color-text-main, $lightness: 40%);
+    }
+
+    &:focus {
+      border-color: $color-accent; // Po kliknięciu ramka robi się pudrowo różowa
+      box-shadow: 0 0 0 4px rgba($color-accent, 0.15); // Zewnętrzna poświata różu
+
+      // Lekko podświetlamy label po kliknięciu w input
+      + .form-group__label {
+        color: $color-accent;
+      }
+    }
+
+    &:disabled {
+      background-color: rgba($color-bg-light, 0.5);
+      color: color.adjust($color-text-main, $lightness: 30%);
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Błędy walidacji pod inputami
+.form-error {
+  color: #e06c75; // Przyjemna, niemęcząca czerwień (nie używamy tu różu, żeby nie mylił się z poprawnym działaniem)
+  font-size: 0.85rem;
+  font-family: $font-body;
+  font-weight: 600;
+  margin-top: -10px;
+  margin-bottom: 15px;
+  margin-left: 4px;
+  animation: slideDownFade 0.3s ease-out;
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
