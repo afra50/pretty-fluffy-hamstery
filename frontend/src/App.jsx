@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import Header from "./components/Header";
-// import Footer from "./components/Footer";
+import Footer from "./components/Footer";
 import routes from "./routes";
 
 function AppRoutes() {
@@ -16,7 +16,7 @@ export default function App() {
 
 				<AppRoutes />
 
-				{/* <Footer /> */}
+				<Footer />
 			</div>
 		</Router>
 	);

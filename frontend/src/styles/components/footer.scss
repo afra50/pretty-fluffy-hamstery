@@ -1,0 +1,253 @@
+// ==========================================
+// STYLES: FOOTER
+// ==========================================
+@use "../variables" as *;
+
+.footer {
+	background-color: $color-secondary;
+	padding: 80px 0 30px;
+	font-family: $font-body;
+	color: $color-bg-light;
+	font-size: 1rem;
+	line-height: 1.6;
+	min-width: 360px;
+
+	@media (max-width: 992px) {
+		padding: 60px 0 20px;
+	}
+
+	// ==========================================
+	// 1. KONTENER GŁÓWNY
+	// ==========================================
+	.footer_container {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 40px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 40px;
+
+		@media (min-width: 2500px) {
+			max-width: 1800px;
+		}
+
+		@media (max-width: 768px) {
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			padding: 0 20px;
+			gap: 40px;
+		}
+	}
+
+	// ==========================================
+	// 2. WSPÓLNE NAGŁÓWKI I UKŁAD KOLUMN
+	// ==========================================
+	.footer_title {
+		font-family: $font-heading;
+		font-size: 1.8rem;
+		color: $color-white;
+		margin-bottom: 25px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+
+		@media (max-width: 768px) {
+			font-size: 1.6rem;
+		}
+	}
+
+	.footer_column {
+		flex: 0 0 auto;
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+	}
+
+	// ==========================================
+	// 3. LEWA STRONA (LOGO I OPIS)
+	// ==========================================
+	.footer_logo_column {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+
+		.footer_logo {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+			text-decoration: none;
+			margin-bottom: 25px;
+
+			.footer_logo_text {
+				font-family: $font-accent;
+				font-size: 2.2rem;
+				color: $color-white;
+				line-height: 1;
+				letter-spacing: 2px;
+			}
+
+			img {
+				height: 140px;
+				width: auto;
+				display: block;
+				@media (max-width: 992px) {
+					height: 110px;
+				}
+				@media (max-width: 480px) {
+					height: 90px;
+				}
+			}
+		}
+
+		.hodowla_rejestracja {
+			font-size: 0.95rem;
+			max-width: 380px;
+			color: rgba($color-white, 0.8);
+		}
+	}
+
+	// ==========================================
+	// 4. PRAWA STRONA (GRUPA MENU + KONTAKT)
+	// ==========================================
+	.footer_right_group {
+		display: flex;
+		gap: 100px;
+		margin-left: 300px;
+
+		@media (max-width: 1200px) {
+			margin-left: 50px;
+		}
+
+		@media (max-width: 992px) {
+			margin-left: 0;
+			gap: 40px;
+		}
+
+		@media (max-width: 768px) {
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+		}
+	}
+
+	// --- 4A. MENU NAWIGACYJNE ---
+	.footer_nav_list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		text-align: left;
+
+		@media (max-width: 768px) {
+			text-align: center;
+		}
+
+		.footer_item {
+			margin-bottom: 5px;
+		}
+
+		.footer_link {
+			font-family: $font-heading;
+			text-decoration: none;
+			color: $color-white;
+			font-weight: 500;
+			display: inline-block;
+			padding: 8px 12px;
+			margin-left: -12px; // Korekta wyrównania do lewej krawędzi nagłówka
+			border-radius: 8px;
+			transition: all 0.3s ease;
+
+			@media (max-width: 768px) {
+				margin-left: 0;
+			}
+
+			&:hover {
+				color: $color-accent;
+				transform: translateX(8px); // Przesunięcie tylko dla menu
+			}
+		}
+	}
+
+	// --- 4B. DANE KONTAKTOWE ---
+	.footer_contact_list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		text-align: left;
+
+		@media (max-width: 768px) {
+			text-align: center;
+		}
+
+		.contact_item {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			color: $color-white;
+			padding: 8px 0;
+			margin-bottom: 5px;
+
+			@media (max-width: 768px) {
+				justify-content: center;
+			}
+
+			svg {
+				color: $color-accent;
+				font-size: 1.2rem;
+				flex-shrink: 0;
+			}
+
+			.contact_link {
+				font-family: $font-heading;
+				color: $color-white;
+				text-decoration: none;
+				font-weight: 500;
+				transition: color 0.3s ease;
+
+				&:hover {
+					color: $color-accent;
+					// BARK przesunięcia dla adresu e-mail, tylko zmiana koloru
+				}
+			}
+		}
+	}
+
+	// --- 4C. SOCIAL MEDIA ---
+	.footer_socials_wrapper {
+		display: flex;
+		gap: 20px;
+		margin-top: 15px;
+		padding-left: 5px;
+
+		@media (max-width: 768px) {
+			justify-content: center;
+			padding-left: 0;
+		}
+
+		.social_link {
+			font-size: 1.8rem;
+			color: $color-white;
+			transition: all 0.3s ease;
+
+			&:hover {
+				color: $color-accent;
+				transform: translateY(-3px) scale(1.1);
+			}
+		}
+	}
+
+	// ==========================================
+	// 5. DOLNY PASEK (COPYRIGHT)
+	// ==========================================
+	.footer_bottom {
+		border-top: 1px solid rgba($color-white, 0.1);
+		margin-top: 50px;
+		padding-top: 25px;
+		text-align: center;
+		font-size: 0.9rem;
+		color: rgba($color-white, 0.6);
+	}
+}
