@@ -13,6 +13,8 @@ EMILA
 - integracja z fb - backend i front
 - komponent do scrollowania do gory
 
+
+
 JULA
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
@@ -26,9 +28,6 @@ JULA
 
 KRZYSIEK
 - 404
-- stopka
-- header
-- button zweryfikowac i poprawic
 - errorstate
 - logo, favicon
 - og image
@@ -38,8 +37,6 @@ KRZYSIEK
 - homepage
 - confirm dialog
 - pagination
-- alert
-- scroll to top + uzyć w app.jsx
 - loader
 
 
