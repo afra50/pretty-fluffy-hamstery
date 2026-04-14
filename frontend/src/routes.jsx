@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 import PurchaseProcess from "./pages/PurchaseProcess";
+import GuidePage from "./pages/GuidePage";
 
 // import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -11,6 +12,7 @@ const routes = [
   // ==========================================
   //   { path: "/", element: <Home /> },
   { path: "/jak-zostac-opiekunem", element: <PurchaseProcess /> },
+  { path: "/poradnik", element: <GuidePage /> },
   //   { path: "*", element: <NotFound /> },
   // ==========================================
   // 🔐 CZĘŚĆ ADMINA
