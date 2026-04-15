@@ -1,19 +1,28 @@
 // src/app.js
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+// --- IMPORT TRAS ---
+const authRoutes = require("./routes/authRoutes");
 
 // Inicjalizacja aplikacji Express
 const app = express();
 
 // --- MIDDLEWARES ---
-// Pozwala na komunikację z frontendem (React na porcie 5173 będzie mógł wysyłać zapytania)
-app.use(cors());
 
-// Pozwala backendowi automatycznie odczytywać dane w formacie JSON (np. z formularzy od Juli)
+// CORS: Kluczowe dla ciasteczek (credentials: true) i Reacta na porcie 5173
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:3000"], // Dodaj tu port frontendu
+    credentials: true,
+  }),
+);
+
 app.use(express.json());
+app.use(cookieParser()); // Kluczowe do czytania ciasteczek!
 
 // --- ENDPOINT TESTOWY ---
-// Żebyśmy mogli łatwo sprawdzić w przeglądarce, czy backend odpowiada
 app.get("/", (req, res) => {
   res.json({
     status: "success",
@@ -21,10 +30,15 @@ app.get("/", (req, res) => {
   });
 });
 
-// --- TWOJE ŚCIEŻKI (ROUTES) - Miejsce na przyszłość ---
-// Tutaj niedługo podepniemy trasy dla miotów, zwierząt i autoryzacji, np.:
-// const miotyRoutes = require('./routes/miotyRoutes');
-// app.use('/api/mioty', miotyRoutes);
+// --- TRASY API ---
+app.use("/api/auth", authRoutes);
 
-// Eksportujemy skonfigurowaną aplikację, ale JESZCZE jej nie uruchamiamy
+// Obsługa 404 (nieistniejące trasy)
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: `Błąd 404: Ścieżka ${req.originalUrl} nie istnieje.`,
+  });
+});
+
 module.exports = app;

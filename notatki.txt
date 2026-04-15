@@ -1,19 +1,14 @@
 EMILA
 - Zabezpieczenie i konfiguracja backendu - biblioteki, logi, limitery itp
-- pliki env, ciasteczka, tokeny, node env production
+- node env production potem zmienic (zmieni to ciastka i ukrywanie odp)
 - wdrozenie na linuksie - apache, baza, backend jako usluga systemowa
 - htaccess, sitemap, manifest json, json ld, robots txt, index html
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
-- autoryzacja - modele, endpointy, middleware, api.js
 - uploadmiddleware
 - server.js, app.js, api.js
-- protected route
-- routes.jsx
 - integracja z fb - backend i front
 - komponent do scrollowania do gory
-
-
 
 JULA
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
