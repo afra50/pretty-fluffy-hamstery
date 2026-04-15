@@ -27,23 +27,8 @@ JULA
 - admin dashboard
 
 KRZYSIEK
-- 404
-- errorstate
-- logo, favicon
-- og image
 - zakładka o nas
 - zakładka mioty front + wykorzystanie integracji z api.js
 - zakładka nasze zwierzęta front + wykorzystanie integracji z api.js
 - homepage
-- confirm dialog
-- pagination
-- loader
 
-
-ZAKŁADKI
-- homepage
-- o nas
-- mioty
-- nasze zwierzęta
-- poradnik
-- jak zostać opiekunem

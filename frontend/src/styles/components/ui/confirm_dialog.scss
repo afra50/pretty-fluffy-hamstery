@@ -1,0 +1,112 @@
+@use "../../variables" as *;
+
+.confirm_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba($color-secondary, 0.6);
+	backdrop-filter: blur(4px);
+	z-index: 10000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	animation: fadeIn 0.2s ease;
+}
+
+.confirm_dialog {
+	background-color: $color-white;
+	width: 100%;
+	max-width: 400px;
+	position: relative;
+	border: 1px solid rgba($color-secondary, 0.1);
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+	padding: 40px 30px 40px; // Zwiększony padding na dole
+	border-radius: 20px;
+	box-sizing: border-box; // Twarda blokada przed rozlewaniem kontentu na zewnątrz
+
+	.confirm_close {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		background: none;
+		border: none;
+		color: rgba($color-secondary, 0.4);
+		cursor: pointer;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: $color-accent;
+		}
+	}
+
+	.confirm_content {
+		text-align: center;
+		margin-bottom: 30px;
+	}
+
+	.confirm_icon {
+		color: $color-accent;
+		margin-bottom: 15px;
+		display: flex;
+		justify-content: center;
+	}
+
+	.confirm_title {
+		font-family: $font-heading;
+		text-transform: uppercase;
+		font-size: 1.25rem;
+		color: $color-secondary;
+		margin-bottom: 10px;
+	}
+
+	.confirm_message {
+		font-family: $font-body;
+		font-size: 0.95rem;
+		color: $color-text-main;
+		line-height: 1.6;
+	}
+	.confirm_actions {
+		display: flex;
+		flex-direction: column; // Awaryjnie na telefonach jeden pod drugim
+		gap: 15px;
+		margin-top: 20px;
+		width: 100%;
+
+		@media (min-width: 400px) {
+			flex-direction: row; // Na normalnych ekranach obok siebie
+		}
+
+		// Ten fragment twardo blokuje rozpychanie przycisków
+		> * {
+			flex: 1;
+			width: 100%;
+			min-width: 0; // Kluczowe: pozwala przyciskowi się skurczyć
+			box-sizing: border-box;
+		}
+	}
+
+	// Wymuszenie zachowania przycisku Anuluj
+	.confirm_cancel_btn {
+		background-color: $color-secondary !important;
+		color: $color-white !important;
+		border: 1px solid $color-secondary !important;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background-color: transparent !important;
+			color: $color-secondary !important;
+		}
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

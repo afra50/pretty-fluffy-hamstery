@@ -1,0 +1,59 @@
+@use "../../variables" as *;
+
+.error_state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4rem 2rem;
+	min-height: 300px;
+	background-color: rgba($color-accent, 0.02);
+	border: 1px dashed rgba($color-accent, 0.3);
+
+	&_content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		max-width: 400px;
+	}
+
+	&_icon {
+		color: $color-accent;
+		margin-bottom: 20px;
+		animation: pulse 2s infinite;
+	}
+
+	&_title {
+		font-family: $font-heading;
+		font-size: 1.5rem;
+		color: $color-secondary;
+		text-transform: uppercase;
+		margin-bottom: 10px;
+	}
+
+	&_message {
+		font-family: $font-body;
+		color: rgba($color-text-main, 0.7);
+		font-size: 0.95rem;
+		line-height: 1.6;
+		margin-bottom: 25px;
+	}
+
+	&_button {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+	100% {
+		opacity: 1;
+	}
+}
