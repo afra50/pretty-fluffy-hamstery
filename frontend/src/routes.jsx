@@ -6,6 +6,7 @@ import PurchaseProcess from "./pages/PurchaseProcess";
 import GuidePage from "./pages/GuidePage";
 import NotFound from "./pages/NotFound";
 import AboutUs from "./pages/AboutUs";
+import Home from "./pages/Home";
 
 // --- Importy Admina ---
 import Login from "./pages/admin/Login";
@@ -14,40 +15,40 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const routes = [
-  // ==========================================
-  // 🌍 CZĘŚĆ PUBLICZNA
-  // ==========================================
-  { path: "/jak-zostac-opiekunem", element: <PurchaseProcess /> },
-  { path: "/poradnik", element: <GuidePage /> },
-  { path: "/o-nas", element: <AboutUs /> },
-  { path: "*", element: <NotFound /> }, // Fallback dla nieistniejących stron publicznych
+	// ==========================================
+	// 🌍 CZĘŚĆ PUBLICZNA
+	// ==========================================
+	{ path: "/jak-zostac-opiekunem", element: <PurchaseProcess /> },
+	{ path: "/poradnik", element: <GuidePage /> },
+	{ path: "/o-nas", element: <AboutUs /> },
+	{ path: "/", element: <Home /> },
+	{ path: "*", element: <NotFound /> },
+	// ==========================================
+	// 🔐 CZĘŚĆ ADMINA
+	// ==========================================
+	{ path: "/admin/login", element: <Login /> },
 
-  // ==========================================
-  // 🔐 CZĘŚĆ ADMINA
-  // ==========================================
-  { path: "/admin/login", element: <Login /> },
+	{
+		path: "/admin",
+		element: (
+			// ProtectedRoute blokuje dostęp niepowołanym
+			<ProtectedRoute>
+				{/* AdminLayout to wrapper, np. navbar + sidebar + <Outlet /> */}
+				<AdminLayout />
+			</ProtectedRoute>
+		),
+		children: [
+			// Domyślny widok po wejściu na "/admin"
+			{ index: true, element: <AdminDashboard /> },
 
-  {
-    path: "/admin",
-    element: (
-      // ProtectedRoute blokuje dostęp niepowołanym
-      <ProtectedRoute>
-        {/* AdminLayout to wrapper, np. navbar + sidebar + <Outlet /> */}
-        <AdminLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      // Domyślny widok po wejściu na "/admin"
-      { index: true, element: <AdminDashboard /> },
+			// Miejsce na przyszłe widoki, np.:
+			// { path: "mioty", element: <AdminLitters /> },
+			// { path: "zwierzeta", element: <AdminAnimals /> },
 
-      // Miejsce na przyszłe widoki, np.:
-      // { path: "mioty", element: <AdminLitters /> },
-      // { path: "zwierzeta", element: <AdminAnimals /> },
-
-      // Zabezpieczenie przed wpisaniem np. /admin/niewiadomoco
-      { path: "*", element: <NotFound /> },
-    ],
-  },
+			// Zabezpieczenie przed wpisaniem np. /admin/niewiadomoco
+			{ path: "*", element: <NotFound /> },
+		],
+	},
 ];
 
 export default routes;

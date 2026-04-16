@@ -3,7 +3,7 @@ import Button from "../components/ui/Button";
 import "../styles/pages/not_found.scss";
 
 // Upewnij się, że struktura folderów się zgadza
-import notFoundImage from "../images/404.webp";
+import notFoundImage from "../assets/404.webp";
 
 const NotFound = () => {
 	return (

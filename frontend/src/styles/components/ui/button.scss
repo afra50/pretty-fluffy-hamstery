@@ -61,6 +61,17 @@
 			color: $color-white;
 		}
 	}
+	// --- WERSJA OUTLINE PINK ---
+	&.btn_outlinepink {
+		background-color: transparent;
+		border-color: $color-accent;
+		color: $color-accent;
+
+		&:hover {
+			background-color: $color-accent;
+			color: $color-white;
+		}
+	}
 
 	// --- WERSJA LIGHT ---
 	&.btn_light {
