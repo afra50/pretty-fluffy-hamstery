@@ -1,0 +1,102 @@
+@use "../../variables" as *;
+
+.home_litters {
+	padding: clamp(60px, 10vw, 100px) 0;
+
+	.home_container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+
+	.home_litters_header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		margin-bottom: 40px;
+
+		.home_section_title {
+			font-family: $font-heading;
+			color: $color-secondary;
+			font-size: clamp(2rem, 4vw, 3rem);
+			margin-bottom: 0;
+		}
+
+		.home_link_all {
+			color: $color-accent;
+			font-weight: bold;
+			text-decoration: none;
+			transition: transform 0.2s;
+
+			&:hover {
+				transform: translateX(5px);
+			}
+		}
+	}
+
+	.home_litters_grid {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 30px;
+
+		@media (min-width: 768px) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.home_litter_card {
+		background-color: $color-white;
+		border-radius: 20px;
+		overflow: hidden;
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s ease;
+
+		&:hover {
+			transform: translateY(-8px);
+		}
+
+		.home_litter_img_placeholder {
+			width: 100%;
+			height: 250px;
+			background-color: rgba($color-secondary, 0.1);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: rgba($color-secondary, 0.5);
+			font-family: $font-heading;
+			font-size: 1.5rem;
+		}
+
+		.home_litter_info {
+			padding: 25px;
+
+			h3 {
+				font-family: $font-heading;
+				font-size: 1.3rem;
+				color: $color-secondary;
+				margin-bottom: 15px;
+			}
+
+			.home_status {
+				display: inline-block;
+				padding: 6px 14px;
+				border-radius: 50px;
+				font-size: 0.85rem;
+				font-weight: bold;
+
+				&.active {
+					background-color: rgba(46, 204, 113, 0.1);
+					color: #27ae60;
+				}
+				&.reserved {
+					background-color: rgba(241, 196, 15, 0.1);
+					color: #d35400;
+				}
+				&.sold {
+					background-color: rgba($color-text-main, 0.1);
+					color: $color-text-main;
+				}
+			}
+		}
+	}
+}

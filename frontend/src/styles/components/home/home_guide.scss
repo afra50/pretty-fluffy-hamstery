@@ -1,0 +1,65 @@
+@use "../../variables" as *;
+
+.home_guide {
+	padding: clamp(60px, 10vw, 100px) 0;
+	background-color: $color-white;
+
+	.home_container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 20px;
+	}
+
+	.home_guide_wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 50px;
+		align-items: center;
+		background-color: $color-bg-light;
+		border-radius: 30px;
+		overflow: hidden;
+
+		@media (min-width: 992px) {
+			flex-direction: row;
+		}
+	}
+
+	.home_guide_text {
+		flex: 1;
+		padding: clamp(30px, 5vw, 60px);
+
+		.home_guide_icon {
+			color: $color-accent;
+			margin-bottom: 20px;
+		}
+
+		h2 {
+			font-family: $font-heading;
+			font-size: clamp(1.8rem, 3vw, 2.5rem);
+			color: $color-secondary;
+			margin-bottom: 20px;
+		}
+
+		p {
+			font-size: 1.05rem;
+			line-height: 1.7;
+			margin-bottom: 30px;
+		}
+	}
+
+	.home_guide_image {
+		flex: 1;
+		width: 100%;
+		height: 100%;
+		min-height: 300px;
+
+		// Nowa klasa dla prawdziwego zdjęcia
+		.home_guide_img_real {
+			width: 100%;
+			height: 100%;
+			min-height: 400px;
+			object-fit: cover; // Żeby zdjęcie ładnie wypełniło przestrzeń i się nie spłaszczyło
+			display: block;
+		}
+	}
+}

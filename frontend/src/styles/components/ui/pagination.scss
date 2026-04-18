@@ -1,0 +1,64 @@
+@use "../../variables" as *;
+
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin: 3rem 0;
+	width: 100%;
+
+	&_arrow,
+	&_number {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: $color-white;
+		border: 1px solid rgba($color-secondary, 0.2);
+		border-radius: 8px;
+		color: $color-text-main;
+		font-family: $font-heading; // Używamy fontu nagłówkowego dla ładnych cyfr
+		font-size: 1rem;
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:hover:not(:disabled) {
+			border-color: $color-accent;
+			color: $color-accent;
+			transform: translateY(-2px); // Lekkie uniesienie
+		}
+
+		&:disabled {
+			opacity: 0.4;
+			cursor: not-allowed;
+			background-color: transparent;
+			border-color: transparent;
+		}
+	}
+
+	&_arrow {
+		width: 40px;
+		height: 40px;
+		color: $color-secondary;
+	}
+
+	&_numbers {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap; // W razie czego na komórkach się połamie
+		justify-content: center;
+	}
+
+	&_number {
+		min-width: 40px;
+		height: 40px;
+		padding: 0 10px;
+
+		&.active {
+			background-color: $color-secondary;
+			color: $color-white;
+			border-color: $color-secondary;
+			pointer-events: none; // Aktywnego nie da się kliknąć
+		}
+	}
+}
