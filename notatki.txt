@@ -17,9 +17,6 @@ JULA
 - image upload
 - dodawanie miotów u admina
 - dodawanie naszych zwierząt u admina
-- logowanie admina - wykorzystanie integracji z api.js + alert
-- admin layout
-- admin dashboard
 
 KRZYSIEK
 - zakładka o nas

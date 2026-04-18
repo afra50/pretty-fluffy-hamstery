@@ -1,0 +1,259 @@
+@use "../../variables" as *;
+@use "sass:color";
+
+$header-height: 130px;
+$header-height-mobile: 100px;
+
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - #{$header-height});
+  background-color: $color-bg-light;
+  font-family: $font-body;
+
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+  overflow-y: visible;
+
+  @media (max-width: 992px) {
+    min-height: calc(100vh - #{$header-height-mobile});
+  }
+}
+
+.admin-sidebar {
+  width: 280px;
+  background-color: $color-white;
+  border-right: 1px solid rgba($color-primary, 0.3);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  position: sticky;
+  top: $header-height;
+  height: calc(100vh - #{$header-height});
+  z-index: 90;
+
+  box-shadow: 10px 0 30px rgba($color-secondary, 0.03);
+
+  &__header {
+    padding: 35px 25px 20px;
+    text-align: center;
+    border-bottom: 1px dashed rgba($color-primary, 0.4);
+    margin-bottom: 10px;
+
+    h2 {
+      font-family: $font-heading;
+      font-size: 1.8rem;
+      color: $color-secondary;
+      margin: 0 0 5px 0;
+
+      span {
+        color: $color-accent;
+      }
+    }
+
+    .admin-subtitle {
+      font-family: $font-accent;
+      color: color.adjust($color-text-main, $lightness: 30%);
+      font-size: 1.3rem;
+      margin: 0;
+    }
+  }
+
+  &__nav {
+    flex-grow: 1;
+    padding: 10px 15px;
+    overflow-y: auto;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      color: $color-text-main;
+      text-decoration: none;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+
+      .nav-icon {
+        margin-right: 12px;
+        color: color.adjust($color-text-main, $lightness: 40%);
+        transition: color 0.3s ease;
+      }
+
+      &:hover {
+        background-color: rgba($color-primary, 0.15);
+        color: $color-secondary;
+        transform: translateX(5px);
+
+        .nav-icon {
+          color: $color-secondary;
+        }
+      }
+
+      &.active {
+        background-color: $color-primary;
+        color: $color-secondary;
+        box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+
+        .nav-icon {
+          color: $color-secondary;
+        }
+      }
+    }
+  }
+
+  &__footer {
+    padding: 20px 15px;
+    border-top: 1px solid rgba($color-primary, 0.2);
+    display: flex;
+    gap: 10px;
+    background-color: $color-white;
+
+    button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: $font-body;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+
+      .nav-icon {
+        margin-right: 8px;
+      }
+    }
+
+    .logout-btn {
+      background-color: rgba($color-accent, 0.1);
+      color: $color-accent;
+
+      &:hover {
+        background-color: $color-accent;
+        color: $color-white;
+      }
+    }
+
+    .mobile-back-btn {
+      background-color: rgba($color-secondary, 0.1);
+      color: $color-secondary;
+
+      &:hover {
+        background-color: $color-secondary;
+        color: $color-white;
+      }
+    }
+
+    .mobile-placeholder {
+      display: none;
+    }
+  }
+}
+
+.admin-content {
+  flex-grow: 1;
+  padding: clamp(30px, 5vw, 50px);
+
+  background-image:
+    radial-gradient(
+      circle at 80% 10%,
+      rgba($color-primary, 0.2),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 20% 90%,
+      rgba($color-accent, 0.1),
+      transparent 30%
+    );
+
+  .admin-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-width: 0;
+    animation: slideUpFade 0.5s ease-out forwards;
+  }
+}
+
+// --- POPRAWKI MOBILNE ---
+@media (max-width: 992px) {
+  .admin-sidebar {
+    width: 80px; // Wąski sidebar
+    top: $header-height-mobile;
+    height: calc(100vh - #{$header-height-mobile});
+
+    &__header {
+      padding: 20px 5px; // Mniejszy padding boczny
+
+      .admin-subtitle {
+        display: none; // Zostawiamy ukryty podtytuł
+      }
+
+      h2 {
+        font-size: 1.1rem;
+        line-height: 1.2;
+
+        // POPRAWIONE: Słowo Fluffy przeniesie się teraz grzecznie pod Pretty
+        span {
+          display: block;
+          margin-top: 3px;
+        }
+      }
+    }
+
+    &__nav a {
+      justify-content: center;
+      padding: 15px;
+      span {
+        display: none;
+      }
+      .nav-icon {
+        margin-right: 0;
+      }
+    }
+
+    &__footer {
+      flex-direction: column;
+      gap: 15px;
+
+      .btn-text {
+        display: none;
+      }
+
+      button {
+        // Aby okrągłe przyciski fajnie wyglądały na telefonie:
+        padding: 12px 0;
+        width: 100%;
+        .nav-icon {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

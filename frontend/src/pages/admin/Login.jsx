@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Usunięto import authApi
+import { authApi } from "../../utils/api";
 import Button from "../../components/ui/Button";
+import toast from "react-hot-toast"; // Przywracamy toast
 import { FaPaw } from "react-icons/fa";
 import "../../styles/forms.scss";
 import "../../styles/pages/admin/login.scss";
@@ -20,18 +21,28 @@ const Login = () => {
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    // Tymczasowa symulacja logowania (1 sekunda opóźnienia)
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Wywołanie API logowania (backend ustawi ciastko z tokenem)
+      await authApi.login(credentials);
 
-      // Dopóki nie ma backendu, wpuszczamy każdego kto cokolwiek wpisze :)
+      // Powiadomienie o sukcesie (style masz w App.jsx)
+      toast.success("Zalogowano pomyślnie!");
+
+      // Przekierowanie do panelu
       navigate("/admin");
-    }, 1000);
+    } catch (err) {
+      // Wyświetlanie błędu z backendu pod formularzem
+      setError(err.response?.data?.error || "Błędny login lub hasło");
+      // Opcjonalnie dodatkowy toast z błędem
+      // toast.error("Logowanie nie powiodło się");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
