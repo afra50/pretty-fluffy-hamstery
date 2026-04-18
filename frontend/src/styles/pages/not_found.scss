@@ -2,93 +2,88 @@
 
 .not_found {
 	background-color: $color-white;
-	padding: 6rem 0;
+	// Asymetryczny padding – przesuwa całość wyżej
+	padding-top: clamp(0.5rem, 2vh, 2rem); // Dużo mniej od headera
+	padding-bottom: clamp(3rem, 8vh, 7rem); // Więcej luzu przed footerem
+	padding-left: 0;
+	padding-right: 0;
 	min-height: 70vh;
 	display: flex;
 	align-items: center;
-
-	@media (max-width: 360px) {
-		padding: 4rem 0;
-	}
+	justify-content: center;
 
 	&_container {
-		max-width: 1300px;
+		max-width: 800px;
 		margin: 0 auto;
 		padding: 0 20px;
 		width: 100%;
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 2rem;
-
-		@media (min-width: 992px) {
-			flex-direction: row;
-			align-items: center;
-			gap: 4rem;
-		}
+		gap: 0;
 
 		@media (min-width: 2500px) {
-			max-width: 1800px;
-			gap: 6rem;
+			max-width: 1000px;
+			gap: 1rem;
 		}
-	}
-
-	&_text {
-		max-width: 400px;
-		text-align: center;
-
-		@media (min-width: 992px) {
-			text-align: left;
-		}
-	}
-
-	&_label {
-		display: block;
-		font-family: $font-heading;
-		font-size: 0.85rem;
-		font-weight: 700;
-		color: $color-accent;
-		letter-spacing: 2px;
-		text-transform: uppercase;
-		margin-bottom: 0.8rem;
-	}
-
-	&_title {
-		font-family: $font-heading;
-		font-size: clamp(1.5rem, 3vw, 2.2rem);
-		color: $color-secondary;
-		line-height: 1.2;
-		margin-bottom: 1rem;
-	}
-
-	&_desc {
-		font-family: $font-body;
-		font-size: 0.95rem;
-		line-height: 1.5;
-		color: $color-text-main;
-		margin-bottom: 2rem;
 	}
 
 	&_image_box {
 		display: flex;
 		justify-content: center;
+		width: 100%;
+		margin-bottom: -1rem;
 	}
 
 	&_image {
 		width: 100%;
 		height: auto;
-		max-width: 400px;
+		max-width: 320px;
 		object-fit: contain;
 
 		@media (min-width: 992px) {
-			max-width: 550px;
-			max-height: 320px;
+			max-width: 440px;
 		}
 
 		@media (min-width: 2500px) {
-			max-width: 700px;
-			max-height: 400px;
+			max-width: 550px;
 		}
+	}
+
+	&_text {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		max-width: 550px;
+	}
+
+	&_label {
+		display: block;
+		font-family: $font-heading;
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: $color-accent;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		margin-bottom: 0.3rem;
+	}
+
+	&_title {
+		font-family: $font-heading;
+		font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+		color: $color-secondary;
+		line-height: 1.1;
+		margin-bottom: 0.5rem;
+	}
+
+	&_desc {
+		font-family: $font-body;
+		font-size: 0.85rem;
+		line-height: 1.4;
+		color: $color-text-main;
+		margin-bottom: 1.2rem;
+		max-width: 450px;
 	}
 }
