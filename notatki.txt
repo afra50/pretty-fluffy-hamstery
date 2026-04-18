@@ -16,7 +16,12 @@ JULA
 - modal
 - image upload
 - dodawanie miotów u admina
-- dodawanie naszych zwierząt u admina
+- nasze chomiki u admina:
+    * dodawanie
+    * usuwanie
+    * edycja
+    * modal
+    * połączyć z backendem
 
 KRZYSIEK
 - zakładka o nas

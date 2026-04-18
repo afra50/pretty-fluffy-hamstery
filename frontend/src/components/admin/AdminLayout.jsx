@@ -36,7 +36,7 @@ const AdminLayout = () => {
   const navItems = [
     { path: "/admin", Icon: LayoutDashboard, label: "Pulpit", end: true },
     { path: "/admin/chomiki", Icon: Heart, label: "Nasze Chomiki" },
-    { path: "/admin/mioty", Icon: PawPrint, label: "Nasze Mioty" },
+    { path: "/admin/mioty", Icon: PawPrint, label: "Mioty" },
   ];
 
   const isDashboard = location.pathname === "/admin";

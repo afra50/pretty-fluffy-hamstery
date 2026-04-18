@@ -14,7 +14,7 @@ const AdminDashboard = () => {
     },
     {
       id: "litters",
-      title: "Nasze Mioty",
+      title: "Mioty",
       desc: "Zarządzaj informacjami o aktualnych i planowanych miotach.",
       icon: <PawPrint size={36} />,
       link: "/admin/mioty",
