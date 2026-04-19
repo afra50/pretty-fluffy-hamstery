@@ -93,4 +93,23 @@ export const authApi = {
   me: () => api.get("/auth/me"),
 };
 
+export const hamsterApi = {
+  getAll: () => api.get("/chomiki"),
+
+  // Ważne: przy wysyłaniu plików musimy podać FormData zamiast zwykłego obiektu
+  create: (formData) =>
+    api.post("/chomiki", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Wymuszenie nagłówka dla plików
+      },
+    }),
+
+  update: (id, formData) =>
+    api.put(`/chomiki/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+
+  delete: (id) => api.delete(`/chomiki/${id}`),
+};
+
 export default api;

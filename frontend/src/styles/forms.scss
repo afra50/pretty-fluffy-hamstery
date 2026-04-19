@@ -71,3 +71,29 @@
     transform: translateY(0);
   }
 }
+
+.file-group {
+  input[type="file"] {
+    display: none; // Ukrywamy brzydki systemowy przycisk
+  }
+
+  .file-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background-color: rgba($color-primary, 0.1);
+    border: 2px dashed rgba($color-primary, 0.5);
+    border-radius: 14px;
+    color: $color-secondary;
+    font-family: $font-body;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgba($color-primary, 0.2);
+      border-color: $color-secondary;
+    }
+  }
+}

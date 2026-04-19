@@ -9,7 +9,7 @@ EMILA
 - integracja z fb - backend i front
 
 JULA
-- nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
+- nasze chomiki - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - modal
 - image upload - pamietaj o sharp/emilia

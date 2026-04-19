@@ -2,25 +2,31 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path"); // <-- DODANE: Potrzebne do ścieżek plików
 
 // --- IMPORT TRAS ---
 const authRoutes = require("./routes/authRoutes");
+const hamsterRoutes = require("./routes/hamsterRoutes"); // <-- DODANE
 
 // Inicjalizacja aplikacji Express
 const app = express();
 
 // --- MIDDLEWARES ---
 
-// CORS: Kluczowe dla ciasteczek (credentials: true) i Reacta na porcie 5173
+// CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"], // Dodaj tu port frontendu
+    origin: ["http://localhost:5173", "http://localhost:3000"],
     credentials: true,
   }),
 );
 
 app.use(express.json());
-app.use(cookieParser()); // Kluczowe do czytania ciasteczek!
+app.use(cookieParser());
+
+// --- SERWOWANIE PLIKÓW STATYCZNYCH (ZDJĘĆ) ---
+// Gdy frontend zapyta o "http://localhost:5000/uploads/...", Express wyda mu plik z folderu public/uploads
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 // --- ENDPOINT TESTOWY ---
 app.get("/", (req, res) => {
@@ -30,10 +36,11 @@ app.get("/", (req, res) => {
   });
 });
 
-// --- TRASY API ---
+// --- TRAS API ---
 app.use("/api/auth", authRoutes);
+app.use("/api/chomiki", hamsterRoutes); // <-- DODANE
 
-// Obsługa 404 (nieistniejące trasy)
+// Obsługa 404
 app.use((req, res, next) => {
   res.status(404).json({
     success: false,

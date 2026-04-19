@@ -179,8 +179,8 @@ $header-height-mobile: 100px;
     );
 
   .admin-page-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1600px; // Zwiększone z 1200px, pozwala kafelkom na swobodne rozłożenie
+    margin: 0; // Zmienione z '0 auto'. Teraz zawartość trzyma się blisko menu po lewej!
     min-width: 0;
     animation: slideUpFade 0.5s ease-out forwards;
   }
