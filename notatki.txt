@@ -15,10 +15,12 @@ JULA
 - modal
 - image upload
 - dodawanie miotów u admina
-- dodawanie naszych zwierząt u admina
-- logowanie admina - wykorzystanie integracji z api.js + alert
-- admin layout
-- admin dashboard
+- nasze chomiki u admina:
+    * dodawanie
+    * usuwanie
+    * edycja
+    * modal
+    * połączyć z backendem
 
 KRZYSIEK
 - zakładka o nas

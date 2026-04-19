@@ -9,13 +9,14 @@ const HomeCTA = () => {
 			<div className="home_cta_overlay"></div>
 			<div className="home_container">
 				<div className="home_cta_content">
-					<span className="home_badge">Nowy dom, nowa przyjaźń</span>
+					<span className="home_badge">świadomy start </span>
 					<h2 className="home_cta_title">
-						Twoja wspólna historia może zacząć się już dziś
+						Zacznijcie wspólną historię od odpowiedzialnego kroku
 					</h2>
 					<p className="home_cta_desc">
-						Sprawdź naszą procedurę adopcyjną i zobacz, jak krok po kroku zostać
-						opiekunem rodowodowego chomika dżungarskiego.
+						Nasze chomiki dorastają w domowych warunkach, otoczone najlepszą
+						opieką. Dowiedz się, jak przygotować idealną wyprawkę i jak krok po
+						kroku zostać właścicielem rodowodowego malucha.
 					</p>
 					<Button to="/jak-zostac-opiekunem" variant="primary">
 						Jak wygląda procedura?
