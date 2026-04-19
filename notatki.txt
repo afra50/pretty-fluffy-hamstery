@@ -8,7 +8,6 @@ EMILA
 - uploadmiddleware
 - server.js, app.js, api.js
 - integracja z fb - backend i front
-- komponent do scrollowania do gory
 
 JULA
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
