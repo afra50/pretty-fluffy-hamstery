@@ -1,0 +1,37 @@
+@use "../../variables" as *;
+
+.form-modal {
+  &__grid {
+    padding: 30px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__actions {
+    padding: 20px 40px 30px;
+    border-top: 1px solid rgba($color-primary, 0.3);
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    background-color: #fafbfc;
+
+    @media (max-width: 576px) {
+      // Ustawienie przycisków pionowo na wąskich telefonach
+      flex-direction: column-reverse; // "Anuluj" na dole, "Zapisz" na górze
+      padding: 15px 20px 20px; // Zredukowane paddingi boczne
+      gap: 10px;
+
+      // Wymuszamy, aby przyciski zajmowały całą dostępną szerokość
+      button,
+      .custom_btn {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+}

@@ -9,19 +9,11 @@ EMILA
 - integracja z fb - backend i front
 
 JULA
-- nasze chomiki - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
-- modal
-- image upload - pamietaj o sharp/emilia
 - dodawanie miotów u admina
-- nasze chomiki u admina:
-    * dodawanie
-    * usuwanie
-    * edycja
-    * modal
-    * połączyć z backendem
 
 KRZYSIEK
+- confirm dialog poprawic zeby nie dalo sie przewijac z tylu strony jak jest wysweitlony
 - zakładka o nas
 - zakładka mioty front + wykorzystanie integracji z api.js
 - zakładka nasze zwierzęta front + wykorzystanie integracji z api.js

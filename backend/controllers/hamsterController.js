@@ -58,6 +58,17 @@ exports.createHamster = async (req, res) => {
         .json({ error: "Imię może mieć maksymalnie 100 znaków." });
     }
 
+    if (!data_urodzenia) {
+      return res.status(400).json({ error: "Data urodzenia jest wymagana." });
+    }
+
+    // NOWE: Limit 500 znaków dla opisu
+    if (opis && opis.length > 500) {
+      return res
+        .status(400)
+        .json({ error: "Opis może mieć maksymalnie 500 znaków." });
+    }
+
     // 2. ENUM dla płci
     if (!plec || !["samiec", "samica"].includes(plec)) {
       return res
@@ -136,98 +147,130 @@ exports.createHamster = async (req, res) => {
 exports.updateHamster = async (req, res) => {
   try {
     const { id } = req.params;
-    const { imie, przydomek, plec, umaszczenie, data_urodzenia, opis } =
-      req.body;
+    const {
+      imie,
+      przydomek,
+      plec,
+      umaszczenie,
+      data_urodzenia,
+      opis,
+      existingZdjecia,
+    } = req.body;
 
-    // --- WALIDACJA DANYCH ---
-    if (!imie || typeof imie !== "string" || imie.trim() === "") {
-      return res.status(400).json({ error: "Imię jest wymagane." });
-    }
-    if (imie.length > 100)
-      return res.status(400).json({ error: "Imię może mieć max 100 znaków." });
-    if (!plec || !["samiec", "samica"].includes(plec)) {
-      return res
-        .status(400)
-        .json({ error: "Płeć jest wymagana (samiec/samica)." });
-    }
-    if (przydomek && przydomek.length > 100)
-      return res.status(400).json({ error: "Przydomek max 100 znaków." });
-    if (umaszczenie && umaszczenie.length > 100)
-      return res.status(400).json({ error: "Umaszczenie max 100 znaków." });
-    if (data_urodzenia) {
-      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-      if (!dateRegex.test(data_urodzenia)) {
-        return res
-          .status(400)
-          .json({ error: "Nieprawidłowy format daty (YYYY-MM-DD)." });
-      }
-    }
-
-    // --- POBRANIE AKTUALNEGO CHOMIKA (żeby nie nadpisać zdjęć pustką) ---
     const currentHamster = await Hamster.getById(id);
-    if (!currentHamster) {
-      return res
-        .status(404)
-        .json({ error: "Nie znaleziono chomika o podanym ID." });
-    }
+    if (!currentHamster)
+      return res.status(404).json({ error: "Nie znaleziono chomika." });
 
-    // Domyślnie zostawiamy stare ścieżki do plików
+    // Pomocnicza funkcja do usuwania plików
+    const deleteFile = async (relPath) => {
+      if (!relPath) return;
+      try {
+        const absPath = path.join(__dirname, "../../public", relPath);
+        await fs.unlink(absPath);
+      } catch (err) {
+        console.error("Błąd usuwania pliku:", err.message);
+      }
+    };
+
+    // --- 1. OBSŁUGA MINIATURKI ---
     let miniaturkaPath = currentHamster.miniaturka;
-    let zdjeciaPaths = currentHamster.zdjecia
-      ? JSON.parse(currentHamster.zdjecia)
-      : [];
-
-    // Jeśli wgrano NOWĄ miniaturkę -> nadpisujemy starą
     if (req.files && req.files.miniaturka) {
+      // Jeśli jest nowa, usuwamy starą z dysku
+      await deleteFile(currentHamster.miniaturka);
       const file = req.files.miniaturka[0];
-      const filename = `thumb_${Date.now()}_${Math.round(Math.random() * 1e9)}.webp`;
+      const filename = `thumb_${Date.now()}.webp`;
       miniaturkaPath = await processAndSaveImage(file.buffer, filename);
     }
 
-    // Jeśli wgrano NOWE zdjęcia do galerii -> nadpisujemy starą galerię
+    // --- 2. OBSŁUGA GALERII ZDJĘĆ ---
+    // existingZdjecia przyjdzie jako string JSON z listą ścieżek, które zostały w modalu
+    let photosToKeep = existingZdjecia ? JSON.parse(existingZdjecia) : [];
+    let oldPhotos = currentHamster.zdjecia
+      ? JSON.parse(currentHamster.zdjecia)
+      : [];
+
+    // Szukamy zdjęć do usunięcia (te, które były w bazie, a nie ma ich w nowej liście)
+    const photosToDelete = oldPhotos.filter(
+      (path) => !photosToKeep.includes(path),
+    );
+    for (const path of photosToDelete) {
+      await deleteFile(path);
+    }
+
+    // Przetwarzamy NOWE zdjęcia wgrane podczas tej edycji
+    let newPhotosPaths = [];
     if (req.files && req.files.zdjecia) {
-      zdjeciaPaths = []; // Czyścimy starą tablicę
       for (const file of req.files.zdjecia) {
         const filename = `img_${Date.now()}_${Math.round(Math.random() * 1e9)}.webp`;
         const savedPath = await processAndSaveImage(file.buffer, filename);
-        zdjeciaPaths.push(savedPath);
+        newPhotosPaths.push(savedPath);
       }
     }
 
-    // --- ZAPIS DO BAZY ---
+    // Finalna galeria to: te co zostały + te nowe
+    const finalGallery = [...photosToKeep, ...newPhotosPaths];
+
     const hamsterData = {
       imie: imie.trim(),
       przydomek: przydomek ? przydomek.trim() : null,
       plec,
       umaszczenie: umaszczenie ? umaszczenie.trim() : null,
-      data_urodzenia: data_urodzenia || null,
+      data_urodzenia,
       opis: opis ? opis.trim() : null,
       miniaturka: miniaturkaPath,
-      zdjecia: zdjeciaPaths,
+      zdjecia: finalGallery,
     };
 
     await Hamster.update(id, hamsterData);
-
-    res.json({ message: "Dane chomika zostały zaktualizowane pomyślnie!" });
+    res.json({ message: "Zaktualizowano pomyślnie!" });
   } catch (err) {
-    console.error("Błąd w updateHamster:", err);
-    res.status(500).json({ error: "Błąd serwera podczas edycji chomika." });
+    console.error(err);
+    res.status(500).json({ error: "Błąd serwera." });
   }
 };
 
 exports.deleteHamster = async (req, res) => {
   try {
     const { id } = req.params;
-    // Opcjonalnie: Tutaj warto dodać logikę usuwania plików z dysku za pomocą fs.unlink
 
-    const affected = await Hamster.delete(id);
-    if (affected === 0) {
+    // 1. Musimy najpierw pobrać dane chomika, żeby znać ścieżki do plików
+    const hamster = await Hamster.getById(id);
+    if (!hamster) {
       return res.status(404).json({ error: "Nie znaleziono chomika" });
     }
 
-    res.json({ message: "Chomik usunięty" });
+    // 2. Funkcja pomocnicza do usuwania pojedynczego pliku
+    const deleteFile = async (relativePath) => {
+      if (!relativePath) return;
+      try {
+        const absolutePath = path.join(__dirname, "../../public", relativePath);
+        await fs.unlink(absolutePath);
+      } catch (err) {
+        console.error(
+          `Błąd podczas usuwania pliku ${relativePath}:`,
+          err.message,
+        );
+        // Nie przerywamy, jeśli pliku fizycznie nie ma (np. został już usunięty ręcznie)
+      }
+    };
+
+    // 3. Usuwamy miniaturkę
+    await deleteFile(hamster.miniaturka);
+
+    // 4. Usuwamy wszystkie zdjęcia z galerii
+    if (hamster.zdjecia) {
+      const zdjecia = JSON.parse(hamster.zdjecia);
+      for (const imgPath of zdjecia) {
+        await deleteFile(imgPath);
+      }
+    }
+
+    // 5. Dopiero teraz usuwamy rekord z bazy danych
+    await Hamster.delete(id);
+
+    res.json({ message: "Chomik i powiązane pliki zostały usunięte" });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Błąd podczas usuwania chomika" });
+    console.error("Błąd w deleteHamster:", err);
+    res.status(500).json({ error: "Błąd serwera podczas usuwania." });
   }
 };

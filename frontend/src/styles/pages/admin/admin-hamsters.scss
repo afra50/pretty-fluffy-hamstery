@@ -14,8 +14,9 @@
 
     @media (max-width: 768px) {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch; // Przycisk zajmie pełną szerokość lub dopasuje się lepiej
       gap: 15px;
+      text-align: center; // Wyśrodkowanie tekstu na mobile
     }
 
     .admin-title {
@@ -34,15 +35,29 @@
     .add-btn {
       gap: 8px;
       padding: 10px 20px;
+      @media (max-width: 480px) {
+        padding: 12px 15px !important;
+        font-size: 0.85rem;
+        width: 100%; // Przycisk na całą szerokość boxa na małych telefonach
+      }
+    }
+
+    @media (max-width: 992px) {
+      padding: 15px; // Mniejszy padding wewnętrzny białego boxa
     }
   }
 
   .hamsters-grid {
     display: grid;
-    // Kafelki muszą być elastyczne, jeśli w środku są zmiennej długości opisy
+    // ZMIANA: Zmniejszamy minimum z 300px na 240px
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    align-items: start; // Dzięki temu krótsze kafelki nie będą się sztucznie rozciągać do sąsiadów w wierszu
+    gap: 20px; // Delikatnie mniejszy odstęp na mobile też pomoże
+    align-items: start;
+
+    @media (max-width: 480px) {
+      // Na bardzo małych ekranach wymuszamy jedną kolumnę, która zajmie 100% dostępnego miejsca
+      grid-template-columns: 1fr;
+    }
   }
 
   .empty-state {

@@ -87,6 +87,13 @@ const AdminHamsters = () => {
     return dateString.substring(0, 10);
   };
 
+  const truncateText = (text, maxLength = 100) => {
+    if (!text) return "";
+    return text.length > maxLength
+      ? text.substring(0, maxLength).trim() + "..."
+      : text;
+  };
+
   // ZMIANA: Zamiast "wczesnego powrotu" na wypadek błędu,
   // definiujemy funkcję renderującą tylko część pod nagłówkiem.
   const renderContent = () => {
@@ -164,7 +171,10 @@ const AdminHamsters = () => {
 
               <div className="description-container">
                 {hamster.opis ? (
-                  <p className="description">{hamster.opis}</p>
+                  <p className="description" title={hamster.opis}>
+                    {/* Tutaj przycinamy do np. 120 znaków */}
+                    {truncateText(hamster.opis, 110)}
+                  </p>
                 ) : (
                   <p className="description empty">Brak opisu.</p>
                 )}

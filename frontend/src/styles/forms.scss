@@ -10,7 +10,7 @@
     font-family: $font-body;
     font-size: 0.95rem;
     font-weight: 700;
-    color: $color-secondary; // Ciemny morski
+    color: $color-secondary;
     margin-bottom: 8px;
     margin-left: 4px;
     transition: color 0.3s ease;
@@ -21,8 +21,8 @@
     font-size: 1rem;
     color: $color-text-main;
     background-color: $color-white;
-    border: 2px solid rgba($color-primary, 0.5); // Jasno błękitna ramka
-    border-radius: 14px; // Miękkie, obłe kąty
+    border: 2px solid rgba($color-primary, 0.5);
+    border-radius: 14px;
     padding: 14px 18px;
     transition: all 0.3s ease;
     outline: none;
@@ -31,11 +31,14 @@
       color: color.adjust($color-text-main, $lightness: 40%);
     }
 
-    &:focus {
-      border-color: $color-accent; // Po kliknięciu ramka robi się pudrowo różowa
-      box-shadow: 0 0 0 4px rgba($color-accent, 0.15); // Zewnętrzna poświata różu
+    &:hover {
+      border-color: $color-secondary;
+    }
 
-      // Lekko podświetlamy label po kliknięciu w input
+    &:focus {
+      border-color: $color-accent;
+      box-shadow: 0 0 0 4px rgba($color-accent, 0.15);
+
       + .form-group__label {
         color: $color-accent;
       }
@@ -49,9 +52,12 @@
   }
 }
 
-// Błędy walidacji pod inputami
+.form-group--full {
+  grid-column: 1 / -1;
+}
+
 .form-error {
-  color: #e06c75; // Przyjemna, niemęcząca czerwień (nie używamy tu różu, żeby nie mylił się z poprawnym działaniem)
+  color: #e06c75;
   font-size: 0.85rem;
   font-family: $font-body;
   font-weight: 600;
@@ -72,28 +78,453 @@
   }
 }
 
-.file-group {
-  input[type="file"] {
-    display: none; // Ukrywamy brzydki systemowy przycisk
+.textarea-styled {
+  resize: none;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+// ==========================================
+// UPIĘKSZANIE BIBLIOTEK ZEWNĘTRZNYCH
+// ==========================================
+
+// --- 1. React Select (Lista Płci) ---
+.react-select {
+  &__control {
+    border: 2px solid rgba($color-primary, 0.5) !important;
+    border-radius: 14px !important;
+    padding: 6px 10px !important;
+    box-shadow: none !important;
+    background-color: $color-white !important;
+    font-family: $font-body;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+
+    // HOVER: Zmienia kolor na morski, ALE TYLKO gdy pole NIE JEST aktywne
+    &:hover:not(.react-select__control--is-focused) {
+      border-color: $color-secondary !important;
+    }
+
+    // FOCUS: Kolor różowy, gdy pole jest kliknięte
+    &--is-focused {
+      border-color: $color-accent !important;
+      box-shadow: 0 0 0 4px rgba($color-accent, 0.15) !important;
+    }
   }
 
-  .file-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 18px;
-    background-color: rgba($color-primary, 0.1);
-    border: 2px dashed rgba($color-primary, 0.5);
-    border-radius: 14px;
-    color: $color-secondary;
+  // --- ZMIANA: Kolor wybranego tekstu w polu ---
+  &__single-value {
+    color: $color-text-main !important;
+  }
+
+  // Wymusza rączkę przy najechaniu na sam tekst wewnątrz
+  &__value-container,
+  &__indicators {
+    cursor: pointer !important;
+  }
+
+  // Usuwamy brzydką, pionową szarą kreskę przed strzałką
+  &__indicator-separator {
+    display: none !important;
+  }
+
+  // --- STYLOWANIE STRZAŁKI (Dropdown Indicator) ---
+  &__dropdown-indicator {
+    color: rgba(
+      $color-primary,
+      0.8
+    ) !important; // Domyślny kolor (jasny błękit)
+    transition: color 0.3s ease !important;
+    cursor: pointer !important;
+  }
+
+  // Strzałka na hover (Morski), ALE TYLKO gdy pole NIE JEST aktywne
+  &__control:hover:not(.react-select__control--is-focused)
+    &__dropdown-indicator {
+    color: $color-secondary !important;
+  }
+
+  // Strzałka na focus (Różowy)
+  &__control--is-focused &__dropdown-indicator,
+  &__control--menu-is-open &__dropdown-indicator {
+    color: $color-accent !important;
+  }
+
+  // --- STYLOWANIE ROZWIJANEGO MENU ---
+  &__menu {
+    border-radius: 14px !important;
+    border: 2px solid rgba($color-primary, 0.2) !important;
+    box-shadow: 0 10px 25px rgba($color-secondary, 0.1) !important;
+    overflow: hidden;
     font-family: $font-body;
+    z-index: 50 !important;
+  }
+
+  // Usuwa białe paski na górze i dole listy
+  &__menu-list {
+    padding: 0 !important;
+  }
+
+  &__option {
+    padding: 12px 18px !important;
+    cursor: pointer !important;
+    background-color: $color-white;
+    color: $color-text-main !important;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    // Po najechaniu myszką (Hover na opcji)
+    &--is-focused {
+      background-color: rgba($color-secondary, 0.08) !important;
+      color: $color-secondary !important;
+    }
+
+    // Wybrana opcja (Ciemne tło, biały tekst)
+    &--is-selected {
+      background-color: $color-secondary !important;
+      color: $color-white !important;
+      font-weight: 700;
+    }
+
+    &:active {
+      background-color: rgba($color-secondary, 0.15) !important;
+    }
+  }
+}
+
+// Klasa błędu dla zwykłego inputa i textarea
+.form-group__input.has-error {
+  border-color: #e06c75 !important; // Czerwony kolor błędu
+  background-color: rgba(#e06c75, 0.05) !important; // Delikatne różowe tło
+
+  &:focus {
+    box-shadow: 0 0 0 4px rgba(#e06c75, 0.15) !important;
+  }
+}
+
+// Obsługa błędu dla React-Select
+.react-select.has-error {
+  .react-select__control {
+    border-color: #e06c75 !important;
+    background-color: rgba(#e06c75, 0.05) !important;
+
+    &--is-focused {
+      box-shadow: 0 0 0 4px rgba(#e06c75, 0.15) !important;
+    }
+  }
+
+  // Opcjonalnie: zmiana koloru ikonki strzałki na błąd
+  .react-select__dropdown-indicator {
+    color: #e06c75 !important;
+  }
+}
+
+// --- 2. React DatePicker (Kalendarz) ---
+.date-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover:not(:focus-within) .form-group__input {
+    border-color: $color-secondary;
+  }
+
+  &:focus-within .form-group__input {
+    border-color: $color-accent;
+    box-shadow: 0 0 0 4px rgba($color-accent, 0.15);
+  }
+
+  .date-icon-trigger {
+    position: absolute;
+    right: 15px;
+    color: rgba($color-primary, 0.8);
+    pointer-events: none;
+    transition: color 0.2s;
+  }
+
+  &:hover:not(:focus-within) .date-icon-trigger {
+    color: $color-secondary;
+  }
+
+  &:focus-within .date-icon-trigger {
+    color: $color-accent;
+  }
+}
+
+// Globalne style okienka kalendarza z biblioteki
+.react-datepicker {
+  font-family: $font-body !important;
+  border-radius: 14px !important;
+  border: 2px solid rgba($color-primary, 0.3) !important;
+  box-shadow: 0 10px 30px rgba($color-secondary, 0.1) !important;
+
+  &__header {
+    background-color: $color-white !important;
+    border-bottom: 1px solid rgba($color-primary, 0.2) !important;
+    border-top-left-radius: 14px !important;
+    border-top-right-radius: 14px !important;
+    padding-top: 15px !important;
+  }
+
+  // Nagłówek miesiąca
+  &__current-month {
+    color: $color-secondary !important;
+    font-weight: 700 !important;
+    margin-bottom: 5px !important;
+    text-transform: capitalize;
+  }
+
+  &__day-name {
+    color: $color-secondary !important;
+    font-weight: 700 !important;
+  }
+
+  // --- ZMIANA: Wybór roku (Przycisk rozwijający) ---
+  &__year-read-view {
+    color: $color-secondary !important;
     font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
+    font-size: 0.95rem;
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    transition: background-color 0.2s !important;
+    background: transparent !important;
 
     &:hover {
-      background-color: rgba($color-primary, 0.2);
-      border-color: $color-secondary;
+      background-color: rgba($color-primary, 0.15) !important;
+      cursor: pointer !important;
+    }
+
+    &--selected-year {
+      color: $color-secondary !important;
+    }
+
+    // Usunięcie strzałki wyboru roku obok nagłówka
+    &--down-arrow {
+      display: none !important;
+    }
+  }
+
+  // --- ZMIANA: Menu rozwijane dla roku (Lista) ---
+  &__year-dropdown {
+    border-radius: 8px !important;
+    border: 1px solid rgba($color-primary, 0.3) !important;
+    background-color: $color-white !important;
+    padding: 0 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+
+    // ZMIANA: Włączone przewijanie pionowe zamiast ukrywania contentu!
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    // Upiększenie wewnętrznego scrolla
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($color-primary, 0.5);
+      border-radius: 3px;
+    }
+
+    .react-datepicker__year-option {
+      padding: 8px 10px !important;
+      background-color: $color-white !important;
+      color: $color-text-main !important;
+      transition:
+        background-color 0.2s,
+        color 0.2s;
+      line-height: 1.5;
+
+      &:hover {
+        background-color: rgba($color-primary, 0.15) !important;
+        color: $color-secondary !important;
+      }
+
+      // Zaznaczony rok w otwartej liście
+      &--selected_year {
+        color: $color-accent !important;
+        font-weight: bold !important;
+        background-color: rgba($color-accent, 0.05) !important;
+      }
+    }
+  }
+
+  // --- ZMIANA: Ukrycie strzałek nawigacyjnych W ŚRODKU LISTY i zbędnych odstępów ---
+  &__year-option--up,
+  &__year-option--down {
+    display: none !important;
+  }
+
+  // Guziki przewijania miesięcy (Strzałki lewo/prawo w nagłówku miesiąca)
+  &__navigation {
+    top: 12px !important;
+
+    &:hover *::before {
+      border-color: $color-accent !important;
+    }
+  }
+
+  &__navigation-icon::before {
+    border-color: $color-secondary !important;
+    transition: border-color 0.2s;
+    border-width: 2px 2px 0 0 !important;
+  }
+
+  // Dni w miesiącu
+  &__day {
+    color: $color-text-main !important;
+    border-radius: 8px !important;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: rgba($color-primary, 0.2) !important;
+    }
+
+    &--selected,
+    &--keyboard-selected {
+      background-color: $color-accent !important;
+      color: $color-white !important;
+      font-weight: bold;
+    }
+  }
+}
+
+// ==========================================
+// DRAG & DROP ZONY (ImageDropzone)
+// ==========================================
+.dropzone {
+  border: 2px dashed rgba($color-primary, 0.5);
+  border-radius: 14px;
+  background-color: rgba($color-primary, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+
+  &:hover,
+  &:focus-within {
+    border-color: $color-secondary;
+    background-color: rgba($color-primary, 0.1);
+  }
+
+  &.has-image {
+    border-style: solid;
+    padding: 0;
+    min-height: auto;
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 8px;
+    color: color.adjust($color-secondary, $lightness: 10%);
+    cursor: pointer;
+    font-family: $font-body;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    height: 100%;
+
+    span {
+      opacity: 0.8;
+    }
+  }
+
+  &__preview-single {
+    width: 100%;
+    max-height: 250px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color-primary, 0.15);
+
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      object-fit: cover;
+    }
+
+    .dropzone__change-btn {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba($color-white, 0.9);
+      color: $color-secondary;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: all 0.2s;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: $color-secondary;
+        color: $color-white;
+      }
+    }
+  }
+}
+
+.gallery-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+
+  &__item {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    overflow: visible;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid $color-white;
+      box-sizing: border-box;
+    }
+  }
+
+  &__remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: $color-accent;
+    color: $color-white;
+    border: 2px solid $color-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s;
+    z-index: 2;
+
+    &:hover {
+      transform: scale(1.15);
+      background-color: color.adjust($color-accent, $lightness: -10%);
     }
   }
 }

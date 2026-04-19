@@ -164,6 +164,7 @@ $header-height-mobile: 100px;
 
 .admin-content {
   flex-grow: 1;
+  min-width: 0;
   padding: clamp(30px, 5vw, 50px);
 
   background-image:
