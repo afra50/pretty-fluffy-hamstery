@@ -5,7 +5,6 @@ EMILA
 - htaccess, sitemap, manifest json, json ld, robots txt, index html
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
-- uploadmiddleware
 - server.js, app.js, api.js
 - integracja z fb - backend i front
 
@@ -13,7 +12,7 @@ JULA
 - nasze zwierzęta - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
 - modal
-- image upload
+- image upload - pamietaj o sharp/emilia
 - dodawanie miotów u admina
 - nasze chomiki u admina:
     * dodawanie
