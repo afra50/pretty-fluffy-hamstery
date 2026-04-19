@@ -45,8 +45,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li className="footer_item">
-                <Link to="/nasze-zwierzeta" className="footer_link">
-                  Nasze zwierzęta
+                <Link to="/nasze-chomiki" className="footer_link">
+                  Nasze chomiki
                 </Link>
               </li>
               <li className="footer_item">
