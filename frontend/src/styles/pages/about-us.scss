@@ -1,0 +1,243 @@
+@use "../variables" as *;
+
+.about_us_cinematic {
+	background-color: $color-white;
+	width: 100%;
+
+	// ==========================================
+	// === HERO (Wielki Banner ze zdjęciem)
+	// ==========================================
+	.cinematic_hero {
+		position: relative;
+		height: 100vh;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #111; // Fallback jakby zdjęcie się ładowało
+		color: $color-white;
+		text-align: center;
+		overflow: hidden;
+
+		// Zdjęcie załadowane z Reacta
+		&_bg {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			z-index: 0;
+		}
+
+		// Nakładka przyciemniająca zdjęcie
+		&_overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(
+				to bottom,
+				rgba(0, 0, 0, 0.3) 0%,
+				rgba(0, 0, 0, 0.8) 100%
+			);
+			z-index: 1;
+		}
+
+		&_content {
+			position: relative;
+			z-index: 2;
+			padding: 0 20px;
+		}
+
+		&_title {
+			font-family: $font-heading;
+			font-size: clamp(2.5rem, 6vw, 5rem);
+			color: $color-accent;
+			margin-bottom: 20px;
+			letter-spacing: 2px;
+		}
+
+		&_subtitle {
+			font-family: $font-body;
+			font-size: clamp(1.2rem, 2vw, 1.5rem);
+			opacity: 0.9;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		.cinematic_scroll_indicator {
+			position: absolute;
+			bottom: 40px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-family: $font-accent;
+			color: $color-white;
+			opacity: 0.6;
+			animation: bounce 2s infinite;
+		}
+	}
+
+	// ==========================================
+	// === KONTENER GŁÓWNY STORYTELLINGU
+	// ==========================================
+	.cinematic_story_container {
+		position: relative;
+		display: flex;
+		flex-direction: column-reverse;
+		width: 100%;
+		max-width: 1400px;
+		margin: 0 auto;
+
+		@media (min-width: 900px) {
+			flex-direction: row;
+		}
+	}
+
+	// ==========================================
+	// === LEWA STRONA (Tekst zjeżdżający)
+	// ==========================================
+	.cinematic_text_side {
+		width: 100%;
+		position: relative;
+		z-index: 2;
+		padding: 0 20px;
+
+		@media (min-width: 900px) {
+			width: 50%;
+			padding: 0 5%;
+		}
+	}
+
+	.cinematic_text_block {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		min-height: 100vh;
+		padding: 100px 0;
+		opacity: 0.2;
+		transform: translateY(20px);
+		transition:
+			opacity 0.6s ease,
+			transform 0.6s ease;
+
+		&.active {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.cinematic_text_title {
+		font-family: $font-heading;
+		color: $color-secondary;
+		font-size: clamp(2rem, 4vw, 3rem);
+		margin-bottom: 30px;
+		position: relative;
+
+		&::before {
+			content: "";
+			display: block;
+			width: 50px;
+			height: 3px;
+			background-color: $color-accent;
+			margin-bottom: 20px;
+		}
+	}
+
+	.cinematic_text_desc {
+		font-family: $font-body;
+		color: $color-text-main;
+		font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+		line-height: 1.8;
+		max-width: 600px;
+	}
+
+	// ==========================================
+	// === PRAWA STRONA (Przyklejone zdjęcia)
+	// ==========================================
+	.cinematic_visual_side {
+		width: 100%;
+		height: 100vh;
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		overflow: hidden;
+
+		@media (min-width: 900px) {
+			width: 50%;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: linear-gradient(
+				to right,
+				$color-white 0%,
+				rgba(255, 255, 255, 0.2) 100%
+			);
+			z-index: 3;
+			pointer-events: none;
+
+			@media (max-width: 899px) {
+				background: rgba(255, 255, 255, 0.85);
+			}
+		}
+	}
+
+	.cinematic_image_wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		transition: opacity 0.8s ease-in-out;
+
+		&.active {
+			opacity: 1;
+			z-index: 2;
+		}
+	}
+
+	.cinematic_img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.cinematic_image_placeholder {
+		width: 100%;
+		height: 100%;
+		background-color: #e0e0e0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		span {
+			font-family: $font-body;
+			color: #888;
+			font-size: 1.2rem;
+			padding: 20px;
+			text-align: center;
+			z-index: 5;
+			max-width: 80%;
+		}
+	}
+}
+
+// Ozdobna animacja strzałki na herosie
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translate(-50%, 0);
+	}
+	50% {
+		transform: translate(-50%, 10px);
+	}
+}

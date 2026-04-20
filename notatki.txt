@@ -12,10 +12,7 @@ JULA
 - dodawanie miotów u admina
 
 KRZYSIEK
-- confirm dialog poprawic zeby nie dalo sie przewijac z tylu strony jak jest wysweitlony
-- error state i loader uzyc na nasze chomiki
 - zakładka o nas
 - zakładka mioty front + wykorzystanie integracji z api.js
-- zakładka nasze chomiki front + wykorzystanie integracji z api.js
-- homepage
+
 

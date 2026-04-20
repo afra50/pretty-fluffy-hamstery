@@ -5,7 +5,8 @@ import "../../styles/components/ui/error_state.scss";
 const ErrorState = ({
 	title = "Coś poszło nie tak",
 	message = "Nie udało się załadować danych. Spróbuj odświeżyć stronę.",
-	onRetry,
+	// ZMIANA: Domyślnie przycisk odświeża stronę. Nie musisz nic przekazywać.
+	onRetry = () => window.location.reload(),
 }) => {
 	return (
 		<div className="error_state">
@@ -16,9 +17,10 @@ const ErrorState = ({
 				<h2 className="error_state_title">{title}</h2>
 				<p className="error_state_message">{message}</p>
 
+				{/* Przycisk ładuje się zawsze, chyba że celowo wpiszesz onRetry={null} */}
 				{onRetry && (
 					<Button
-						variant="primary" // ZMIANA: pełny kolor od startu
+						variant="primary"
 						onClick={onRetry}
 						className="error_state_button">
 						<RefreshCw size={18} />

@@ -1,19 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // <-- DODANY IMPORT
+import { useNavigate } from "react-router-dom";
 import { hamsterApi } from "../utils/api";
 import Button from "../components/ui/Button";
+import ErrorState from "../components/ui/ErrorState";
+import Loader from "../components/ui/Loader";
 import "../styles/pages/our-hamsters.scss";
 
+// ==========================================
+// === ZMIENNE GLOBALNE
+// ==========================================
 const IMAGE_BASE_URL = (
 	import.meta.env.VITE_API_URL || "http://localhost:5000/api"
 ).replace("/api", "");
 
+// ==========================================
+// === GŁÓWNY KOMPONENT
+// ==========================================
 const OurHamsters = () => {
+	// ==========================================
+	// === STANY I HOOKI
+	// ==========================================
 	const [hamsters, setHamsters] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const navigate = useNavigate(); // <-- INICJALIZACJA NAWIGACJI
 
+	// ==========================================
+	// === EFEKTY UBOCZNE (POBIERANIE DANYCH)
+	// ==========================================
 	useEffect(() => {
 		const fetchHamsters = async () => {
 			try {
@@ -32,6 +46,9 @@ const OurHamsters = () => {
 		fetchHamsters();
 	}, []);
 
+	// ==========================================
+	// === FILTROWANIE DANYCH (SAMCE / SAMICE)
+	// ==========================================
 	const females = hamsters.filter(
 		(h) => h.plec && h.plec.toLowerCase() === "samica",
 	);
@@ -39,6 +56,9 @@ const OurHamsters = () => {
 		(h) => h.plec && h.plec.toLowerCase() === "samiec",
 	);
 
+	// ==========================================
+	// === FUNKCJE POMOCNICZE (RENDEROWANIE KART)
+	// ==========================================
 	const renderHamsterGrid = (hamsterList) => (
 		<div className="our_hamsters_grid">
 			{hamsterList.map((hamster) => (
@@ -95,6 +115,9 @@ const OurHamsters = () => {
 		</div>
 	);
 
+	// ==========================================
+	// === GŁÓWNY RENDER
+	// ==========================================
 	return (
 		<section className="our_hamsters">
 			<div className="our_hamsters_header">
@@ -105,9 +128,11 @@ const OurHamsters = () => {
 			</div>
 
 			<div className="our_hamsters_container">
-				{isLoading && <div className="our_hamsters_loader">Wczytywanie...</div>}
+				{/* <-- ZMIANA: PODPIĘTY KOMPONENT LOADERA */}
+				{isLoading && <Loader />}
 
-				{error && <div className="our_hamsters_error">{error}</div>}
+				{/* <-- ZMIANA: WYŚWIETLANIE KOMPONENTU BŁĘDU ZAMIAST SUROWEGO DIVA */}
+				{error && <ErrorState message={error} />}
 
 				{!isLoading && !error && hamsters.length === 0 && (
 					<div className="our_hamsters_empty">
