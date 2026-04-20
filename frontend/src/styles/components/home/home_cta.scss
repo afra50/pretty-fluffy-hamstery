@@ -1,92 +1,84 @@
 @use "../../variables" as *;
 
-.home_cta {
+.cta-modern-minimal {
 	position: relative;
 	width: 100%;
 
-	// Z kodu szwagierki:
+	// Zmniejszamy paddingi: było 100-180px, teraz dajemy 60-100px
 	padding: clamp(60px, 8vw, 100px) 0;
+
+	// Zmniejszamy min-height: było 450-650px, teraz wystarczy 300-450px
 	min-height: clamp(300px, 40vh, 450px);
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
-	background-color: #faf7f0;
+	background-color: $color-bg-light;
+	background-image: url('../../../assets/homecta.webp');
 	background-size: cover;
-	background-position: center right;
-	overflow: hidden;
+	background-position: center;
 
-	.home_cta_overlay {
+	.cta-overlay {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		// ZMIANA: Gradient zanika szybciej, odkrywając więcej zdjęcia z prawej
-		background: linear-gradient(
-			to right,
-			#faf7f0 0%,
-			#faf7f0 35%,
-			rgba(250, 247, 240, 0.8) 45%,
-			rgba(250, 247, 240, 0) 75%
-		);
+		// Przesuwamy punkt startu gradientu, żeby był bardziej zwarty
+		background: linear-gradient(to right,
+				rgba($color-bg-light, 1) 40%,
+				rgba($color-bg-light, 0.4) 100%);
 		z-index: 1;
 
 		@media (max-width: 992px) {
-			background: rgba(250, 247, 240, 0.94);
+			background: rgba($color-bg-light, 0.94);
 		}
 	}
 
-	.home_container {
+	.cta-container {
 		position: relative;
 		z-index: 2;
 		max-width: 1200px;
-
-		// Z KODU SZWAGIERKI: to tu tkwił problem z przesunięciem w poziomie
 		width: 90%;
 		display: flex;
 		justify-content: flex-start;
-		margin: 0 auto;
 
 		@media (max-width: 992px) {
 			justify-content: center;
 			text-align: center;
 		}
-
-		@media (min-width: 2500px) {
-			max-width: 1600px;
-		}
 	}
 
-	.home_cta_content {
-		max-width: 580px; // Z kodu szwagierki
+	.cta-content {
+		max-width: 580px; // Nieco węższy blok tekstu
 
-		.home_badge {
+		.cta-top-text {
 			font-family: $font-body;
 			text-transform: uppercase;
 			letter-spacing: 2px;
-			font-size: 0.8rem;
-			color: $color-accent;
+			font-size: 0.8rem; // Zmniejszony
+			color: $color-accent; // Twój róż dla delikatności
 			font-weight: 700;
 			display: block;
-			margin-bottom: 12px; // Z kodu szwagierki
+			margin-bottom: 12px;
 		}
 
-		.home_cta_title {
+		.cta-heading {
 			font-family: $font-accent;
-			color: $color-secondary;
-			font-size: clamp(2.2rem, 5vw, 3.5rem); // Z kodu szwagierki
+			color: $color-secondary; // Ciemny morski dla kontrastu
+			// Zmniejszony nagłówek (było 2.8-4.8, dajemy 2.2-3.5)
+			font-size: clamp(2.2rem, 5vw, 3.5rem);
 			line-height: 1.1;
-			margin-bottom: 20px; // Z kodu szwagierki
-			font-weight: 700;
+			margin-bottom: 20px;
 		}
 
-		.home_cta_desc {
+		p {
 			font-family: $font-body;
-			font-size: clamp(1rem, 1.5vw, 1.1rem); // Z kodu szwagierki
-			line-height: 1.7;
-			margin-bottom: 35px; // Z kodu szwagierki
 			color: $color-text-main;
+			font-size: clamp(1rem, 1.5vw, 1.1rem); // Subtelniejszy tekst
+			line-height: 1.7;
+			margin-bottom: 35px; // Mniejszy odstęp przed guzikiem
 		}
 	}
 }

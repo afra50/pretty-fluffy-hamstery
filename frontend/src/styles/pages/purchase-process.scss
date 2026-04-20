@@ -278,86 +278,157 @@
         }
     }
 
-    // --- FULL WIDTH CTA ---
-    .cta-modern-minimal {
-        position: relative;
-        width: 100%;
+    // --- NOWOCZESNE CTA: ORGANICZNE ZDJĘCIE (BLOB) ---
+    .cta-organic-section {
+        max-width: 1100px;
+        margin: 0 auto clamp(60px, 10vw, 100px) auto;
+        padding: 0 20px;
 
-        // Zmniejszamy paddingi: było 100-180px, teraz dajemy 60-100px
-        padding: clamp(60px, 8vw, 100px) 0;
+        .cta-organic-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            // Zwiększamy gap, żeby dać oddech organicznym kształtom
+            gap: clamp(30px, 5vw, 60px);
+            align-items: center;
 
-        // Zmniejszamy min-height: było 450-650px, teraz wystarczy 300-450px
-        min-height: clamp(300px, 40vh, 450px);
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background-color: $color-bg-light;
-        background-image: url('../../assets/purchase-cta.webp');
-        background-size: cover;
-        background-position: center;
-
-        .cta-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            // Przesuwamy punkt startu gradientu, żeby był bardziej zwarty
-            background: linear-gradient(to right,
-                    rgba($color-bg-light, 1) 40%,
-                    rgba($color-bg-light, 0.4) 100%);
-            z-index: 1;
-
-            @media (max-width: 992px) {
-                background: rgba($color-bg-light, 0.94);
+            @media (max-width: 850px) {
+                grid-template-columns: 1fr;
+                // Na mobile zdjęcie idzie nad tekst
+                gap: 40px;
             }
         }
 
-        .cta-container {
+        .cta-image-wrapper {
             position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            width: 90%;
+            // Dajemy padding, żeby tło wystawało
+            padding: 20px;
             display: flex;
-            justify-content: flex-start;
+            align-items: center;
+            justify-content: center;
 
-            @media (max-width: 992px) {
-                justify-content: center;
-                text-align: center;
+            // Kontener dla tła i zdjęcia, żeby razem animowały
+            &>* {
+                transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.7s ease;
+            }
+
+            &:hover {
+                .cta-organic-image {
+                    transform: scale(1.03) rotate(1deg);
+                }
+
+                .cta-image-blob-bg {
+                    transform: translate(-10px, 10px) scale(1.05);
+                    background-color: color.adjust($color-primary, $lightness: -5%);
+                }
+            }
+
+            // --- TRICK NA ORGANICZNY KSZTAŁT (BLOB) ---
+            // Niesymetryczne zaokrąglenia tworzą efekt "pływania"
+            $blob-radius: 60% 40% 70% 30% / 40% 60% 30% 70%;
+            $blob-radius-bg: 50% 50% 30% 70% / 60% 40% 60% 40%; // Nieco inny dla tła
+
+            .cta-organic-image {
+                position: relative;
+                z-index: 2;
+                width: 100%;
+                max-width: 450px; // Zabezpieczenie przed zbyt dużym zdjęciem
+                // Wysokość clamp, żeby na desktopie było wyższe
+                height: clamp(300px, 45vh, 450px);
+                object-fit: cover;
+                border-radius: $blob-radius;
+                box-shadow: 0 15px 35px rgba($color-secondary, 0.1);
+                border: 2px solid $color-white; // Cienka biała ramka
+            }
+
+            .cta-image-blob-bg {
+                position: absolute;
+                z-index: 1;
+                top: 30px; // Przesunięcie w dół
+                left: 10px; // Przesunięcie w lewo
+                width: 100%;
+                max-width: 450px;
+                height: clamp(300px, 45vh, 450px);
+                background-color: rgba($color-primary, 0.2); // Miękki kolor
+                border-radius: $blob-radius-bg;
+                pointer-events: none; // Nie przeszkadza w hover na obrazku
             }
         }
 
-        .cta-content {
-            max-width: 580px; // Nieco węższy blok tekstu
+        .cta-content-wrapper {
+            // Czysty layout tekstu, bez tła dla całej sekcji
+            padding: 20px 0;
 
-            .cta-top-text {
-                font-family: $font-body;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                font-size: 0.8rem; // Zmniejszony
-                color: $color-accent; // Twój róż dla delikatności
-                font-weight: 700;
-                display: block;
-                margin-bottom: 12px;
+            @media (max-width: 850px) {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
-            .cta-heading {
-                font-family: $font-accent;
-                color: $color-secondary; // Ciemny morski dla kontrastu
-                // Zmniejszony nagłówek (było 2.8-4.8, dajemy 2.2-3.5)
-                font-size: clamp(2.2rem, 5vw, 3.5rem);
+            .cta-subtitle {
+                font-family: $font-heading;
+                color: $color-accent;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                font-size: 0.85rem;
+                font-weight: bold;
+                margin-bottom: 15px;
+                display: block;
+            }
+
+            h2 {
+                font-family: $font-heading;
+                color: $color-secondary;
+                font-size: clamp(2rem, 3.5vw, 2.8rem);
                 line-height: 1.1;
-                margin-bottom: 20px;
+                margin: 0 0 25px 0;
             }
 
             p {
-                font-family: $font-body;
-                color: $color-text-main;
-                font-size: clamp(1rem, 1.5vw, 1.1rem); // Subtelniejszy tekst
+                font-size: 1.1rem;
                 line-height: 1.7;
-                margin-bottom: 35px; // Mniejszy odstęp przed guzikiem
+                color: color.adjust($color-text-main, $lightness: 10%);
+                margin-bottom: 40px;
+                max-width: 550px;
+            }
+
+            .cta-action-group {
+                display: flex;
+                align-items: center;
+                gap: 30px;
+                flex-wrap: wrap;
+
+                @media (max-width: 850px) {
+                    justify-content: center;
+                }
+
+                @media (max-width: 500px) {
+                    flex-direction: column;
+                    gap: 15px;
+                    width: 100%;
+                }
+
+                .btn-solid {
+                    padding: 16px 35px;
+                    font-size: 1.05rem;
+                    border-radius: 50px; // Pełne zaokrąglenie pasuje do bloba
+                }
+
+                .btn-text {
+                    color: $color-secondary;
+                    font-weight: 600;
+                    text-decoration: none;
+                    font-size: 1rem;
+                    display: flex;
+                    align-items: center;
+                    transition: color 0.3s ease, transform 0.3s ease;
+
+                    &:hover {
+                        color: $color-accent;
+                        // Opcjonalnie: lekki ruch strzałki
+                        transform: translateX(5px);
+                    }
+                }
             }
         }
     }
