@@ -16,6 +16,6 @@ KRZYSIEK
 - confirm dialog poprawic zeby nie dalo sie przewijac z tylu strony jak jest wysweitlony
 - zakładka o nas
 - zakładka mioty front + wykorzystanie integracji z api.js
-- zakładka nasze zwierzęta front + wykorzystanie integracji z api.js
+- zakładka nasze chomiki front + wykorzystanie integracji z api.js
 - homepage
 
