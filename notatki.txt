@@ -6,7 +6,6 @@ EMILA
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
 - server.js, app.js, api.js
-- integracja z fb - backend i front
 
 JULA
 - mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware

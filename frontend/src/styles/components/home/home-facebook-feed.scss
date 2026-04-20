@@ -1,0 +1,154 @@
+@use "../../variables" as *;
+
+.facebook-feed-section {
+    // 1. Dodajemy tło na pełną szerokość
+    background-color: rgba($color-primary, 0.1);
+    padding: clamp(60px, 8vw, 100px) 20px;
+
+    // 2. Dodajemy kontener ograniczający szerokość siatki
+    .feed-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .feed-header {
+        text-align: center;
+        margin-bottom: 50px;
+
+        h2 {
+            font-family: $font-heading;
+            color: $color-secondary;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin: 0 0 10px 0;
+        }
+
+        p {
+            color: $color-text-main;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    }
+
+    .feed-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .fb-post-card {
+        background-color: $color-white;
+        border-radius: 16px;
+        overflow: hidden;
+        // Delikatniejszy cień, bo sekcja ma już lekko ciemniejsze tło
+        box-shadow: 0 10px 30px rgba($color-text-main, 0.05);
+        border: 1px solid rgba($color-primary, 0.15);
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 15px 35px rgba($color-text-main, 0.12);
+
+            .post-image {
+                transform: scale(1.05);
+            }
+
+            .post-placeholder {
+                background-color: rgba($color-bg-light, 0.03);
+                color: $color-secondary;
+
+                .placeholder-icon {
+                    transform: scale(1.1);
+                }
+            }
+        }
+
+        .post-image-link {
+            display: block;
+            width: 100%;
+            height: clamp(180px, 30vh, 250px);
+            overflow: hidden;
+            background-color: $color-bg-light;
+            position: relative;
+            text-decoration: none;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: $color-bg-light;
+                z-index: 2;
+            }
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .post-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: rgba($color-accent, 0.5); // Subtelny kolor ikony
+            transition: all 0.3s ease;
+
+            .placeholder-icon {
+                transition: transform 0.3s ease;
+            }
+        }
+
+        .post-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+
+            .post-date {
+                font-size: 0.85rem;
+                color: rgba($color-secondary, 0.6);
+                margin-bottom: 12px;
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .post-message {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: $color-text-main;
+                margin: 0 0 20px 0;
+                flex-grow: 1;
+            }
+
+            .post-read-more {
+                display: inline-block;
+                color: $color-accent;
+                font-weight: 600;
+                text-decoration: none;
+                font-size: 0.95rem;
+                margin-top: auto;
+                transition: color 0.2s;
+
+                &:hover {
+                    color: $color-secondary;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

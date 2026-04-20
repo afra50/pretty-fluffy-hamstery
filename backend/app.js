@@ -7,6 +7,7 @@ const path = require("path"); // <-- DODANE: Potrzebne do ścieżek plików
 // --- IMPORT TRAS ---
 const authRoutes = require("./routes/authRoutes");
 const hamsterRoutes = require("./routes/hamsterRoutes"); // <-- DODANE
+const facebookRoutes = require("./routes/facebookRoutes");
 
 // Inicjalizacja aplikacji Express
 const app = express();
@@ -39,6 +40,7 @@ app.get("/", (req, res) => {
 // --- TRAS API ---
 app.use("/api/auth", authRoutes);
 app.use("/api/chomiki", hamsterRoutes); // <-- DODANE
+app.use("/api/facebook", facebookRoutes);
 
 // Obsługa 404
 app.use((req, res, next) => {
