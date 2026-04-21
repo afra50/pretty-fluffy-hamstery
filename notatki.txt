@@ -12,7 +12,6 @@ JULA
 - dodawanie miotów u admina
 
 KRZYSIEK
-- zakładka o nas
 - zakładka mioty front + wykorzystanie integracji z api.js
 
 

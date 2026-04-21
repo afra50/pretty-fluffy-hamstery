@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 // ==========================================
 // === IMPORTY ZDJĘĆ (Podmień na swoje ścieżki!)
 // ==========================================
-import heroImage from "../assets/hero-banner.jpg";
+import heroImage from "../assets/4.jpg";
 import imgKlementyna from "../assets/klementyna-dyplom.jpg";
 import imgKrokiet from "../assets/krokiet.jpg";
 import imgChomikarium from "../assets/chomikarium.jpg";
-import imgJedzenie from "../assets/klementyna-jedzenie.jpg";
+import imgJedzenie from "../assets/5.jpg";
 import imgWroclaw from "../assets/wroclaw.webp";
 
 import "../styles/pages/about-us.scss";

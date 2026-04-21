@@ -87,7 +87,8 @@
 		display: flex;
 		flex-direction: column-reverse;
 		width: 100%;
-		max-width: 1400px;
+		// ZMIANA: Usunięto max-width: 1400px, aby kontener rozciągał się na pełny ekran.
+		max-width: none;
 		margin: 0 auto;
 
 		@media (min-width: 900px) {
@@ -107,6 +108,10 @@
 		@media (min-width: 900px) {
 			width: 50%;
 			padding: 0 5%;
+			// ZMIANA: Dodano flex, aby kontrolować wyrównanie bloku z treścią wewnątrz panelu.
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start; // Wyrównanie do góry panelu
 		}
 	}
 
@@ -121,10 +126,18 @@
 		transition:
 			opacity 0.6s ease,
 			transform 0.6s ease;
+		// ZMIANA: Przeniesiono ograniczenie szerokości z desc na blok nadrzędny, aby zachować balans wizualny.
+		max-width: 600px;
+		width: 100%;
 
 		&.active {
 			opacity: 1;
 			transform: translateY(0);
+		}
+
+		@media (min-width: 900px) {
+			// ZMIANA: Wyrównanie bloku tekstu do prawej krawędzi panelu (środka ekranu) na szerokich monitorach.
+			margin-left: auto;
 		}
 	}
 
@@ -150,7 +163,7 @@
 		color: $color-text-main;
 		font-size: clamp(1.1rem, 1.5vw, 1.3rem);
 		line-height: 1.8;
-		max-width: 600px;
+		// ZMIANA: Usunięto stąd max-width, jest teraz na cinematic_text_block.
 	}
 
 	// ==========================================
@@ -165,6 +178,7 @@
 		overflow: hidden;
 
 		@media (min-width: 900px) {
+			// Zajmuje teraz 50% PEŁNEJ szerokości ekranu, dochodząc do krawędzi.
 			width: 50%;
 		}
 
