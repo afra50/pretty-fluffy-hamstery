@@ -1,0 +1,322 @@
+@use "../../variables" as *;
+@use "sass:color";
+
+.admin-litters {
+  // IDENTYCZNY NAGŁÓWEK JAK W CHOMIKACH
+  .admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: $color-white;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba($color-primary, 0.4);
+
+    @media (max-width: 992px) {
+      padding: 15px;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+      text-align: center;
+    }
+
+    .admin-title {
+      font-family: $font-heading;
+      color: $color-secondary;
+      font-size: 2rem;
+      margin: 0 0 5px 0;
+    }
+
+    .admin-desc {
+      color: color.adjust($color-text-main, $lightness: 20%);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+
+    .add-btn {
+      gap: 8px;
+      padding: 10px 20px;
+      @media (max-width: 480px) {
+        padding: 12px 15px !important;
+        font-size: 0.85rem;
+        width: 100%;
+      }
+    }
+  }
+
+  // ZAKŁADKI (TABS)
+  .litters-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid rgba($color-primary, 0.2);
+    padding-bottom: 10px;
+
+    @media (max-width: 576px) {
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      font-family: $font-heading;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: color.adjust($color-text-main, $lightness: 30%);
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+
+      @media (max-width: 576px) {
+        flex: 1;
+        justify-content: center;
+        padding: 10px;
+        font-size: 1rem;
+      }
+
+      &:hover {
+        background-color: rgba($color-primary, 0.1);
+        color: $color-secondary;
+      }
+
+      &.active {
+        background-color: $color-primary;
+        color: $color-secondary;
+        box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+      }
+    }
+  }
+
+  // SIATKA I KARTY
+  .litters-grid {
+    display: grid;
+    // Z powrotem 300px, żeby karty były odpowiednio szerokie na komputerze
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    align-items: start;
+
+    @media (max-width: 480px) {
+      // Dopiero na bardzo wąskich telefonach zrzucamy do 1 kolumny na pełną szerokość
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 50px;
+    color: color.adjust($color-text-main, $lightness: 40%);
+    background: rgba($color-white, 0.5);
+    border-radius: 20px;
+    border: 2px dashed rgba($color-primary, 0.5);
+  }
+
+  .litter-card {
+    background-color: $color-white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba($color-primary, 0.3);
+    box-shadow: 0 10px 20px rgba($color-secondary, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    min-width: 0;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba($color-secondary, 0.08);
+      border-color: $color-accent;
+    }
+
+    &__image {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      background-color: rgba($color-primary, 0.1);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      // POPRAWIONA PLAKIETKA (STATUS) - kolory motywu
+      .status-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        &.aktualne {
+          background-color: $color-accent; // Różowy motywu
+          color: $color-white;
+        }
+        &.archiwum {
+          background-color: color.adjust(
+            $color-text-main,
+            $lightness: 40%
+          ); // Szary
+          color: $color-white;
+        }
+      }
+    }
+
+    // WIDOK DLA PLANOWANYCH
+    &__planned-header {
+      background-color: rgba($color-primary, 0.1);
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px dashed rgba($color-primary, 0.4);
+
+      .parent-circle {
+        background-color: $color-white;
+        border: 2px solid $color-primary;
+        border-radius: 30px;
+        padding: 10px 15px;
+        font-family: $font-heading;
+        font-size: 0.9rem;
+        font-weight: 700;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        flex: 1;
+
+        &.mom {
+          color: #fd79a8;
+          border-color: #fd79a8;
+        }
+        &.dad {
+          color: #74b9ff;
+          border-color: #74b9ff;
+        }
+      }
+
+      .heart-icon {
+        animation: pulse 2s infinite;
+      }
+    }
+
+    &__content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .name-wrapper {
+        margin-bottom: 18px;
+        .name {
+          font-family: $font-heading;
+          color: $color-secondary;
+          font-size: 1.6rem;
+          margin: 0;
+        }
+      }
+
+      .details {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 15px 0;
+        font-size: 0.9rem;
+        color: $color-text-main;
+
+        li {
+          margin-bottom: 6px;
+        }
+        strong {
+          color: $color-secondary;
+        }
+      }
+
+      // IDENTYCZNE ZACHOWANIE OPISU JAK W CHOMIKACH
+      .description-container {
+        flex-grow: 1;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+
+        .description {
+          font-size: 0.9rem;
+          color: color.adjust($color-text-main, $lightness: 20%);
+          line-height: 1.5;
+          margin: 0;
+          white-space: normal;
+
+          &.empty {
+            font-style: italic;
+            color: color.adjust($color-text-main, $lightness: 50%);
+          }
+        }
+      }
+
+      // IDENTYCZNE PRZYCISKI JAK W CHOMIKACH
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid rgba($color-primary, 0.2);
+        padding-top: 15px;
+
+        button {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          padding: 8px;
+          border-radius: 10px;
+          font-family: $font-body;
+          font-weight: bold;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          border: none;
+        }
+
+        .btn-edit {
+          background-color: rgba($color-primary, 0.2);
+          color: $color-secondary;
+
+          &:hover {
+            background-color: $color-primary;
+          }
+        }
+
+        .btn-delete {
+          background-color: rgba(#ff7675, 0.1);
+          color: #d63031;
+
+          &:hover {
+            background-color: #ff7675;
+            color: $color-white;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

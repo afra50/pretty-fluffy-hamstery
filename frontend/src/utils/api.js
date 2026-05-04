@@ -112,4 +112,17 @@ export const hamsterApi = {
   delete: (id) => api.delete(`/chomiki/${id}`),
 };
 
+export const litterApi = {
+  getAll: () => api.get("/mioty"),
+  create: (formData) =>
+    api.post("/mioty", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  update: (id, formData) =>
+    api.put(`/mioty/${id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }),
+  delete: (id) => api.delete(`/mioty/${id}`),
+};
+
 export default api;
