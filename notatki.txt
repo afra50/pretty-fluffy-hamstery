@@ -7,11 +7,6 @@ EMILA
 - tunelowanie cloudflare
 - server.js, app.js, api.js
 
-JULA
-- mioty - modele, endpointy, dodać integracje do api.js, wykorzystać uploadmiddleware
-- dodawanie miotów u admina
-    * pamietac zeby przy wywaleniu chomika miot się nie psuł
-
 KRZYSIEK
 - zakładka mioty front + wykorzystanie integracji z api.js
 

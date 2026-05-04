@@ -84,16 +84,6 @@ const HamsterFormModal = ({ isOpen, onClose, onSuccess, hamsterToEdit }) => {
     setFiles({ miniaturka: null, zdjecia: [] });
   }, [hamsterToEdit, isOpen]);
 
-  useEffect(() => {
-    return () => {
-      if (previews.miniaturka[0]?.startsWith("blob:"))
-        URL.revokeObjectURL(previews.miniaturka[0]);
-      previews.zdjecia.forEach((url) => {
-        if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
-      });
-    };
-  }, [previews]);
-
   const clearError = (fieldName) => {
     if (errors[fieldName]) {
       setErrors((prev) => {
@@ -144,6 +134,7 @@ const HamsterFormModal = ({ isOpen, onClose, onSuccess, hamsterToEdit }) => {
 
       if (availableSlots <= 0) {
         toast.error("Galeria jest pełna (maksymalnie 10 zdjęć).");
+        e.target.value = null; // WAŻNE: Reset wejścia przed wczesnym wyjściem
         return;
       }
 
@@ -152,6 +143,7 @@ const HamsterFormModal = ({ isOpen, onClose, onSuccess, hamsterToEdit }) => {
         toast.error(
           `Nie można dodać zdjęć. Masz miejsce na ${availableSlots}, a wybrałeś ${uniqueIncomingFiles.length}.`,
         );
+        e.target.value = null; // WAŻNE: Reset wejścia przed wczesnym wyjściem
         return;
       }
 

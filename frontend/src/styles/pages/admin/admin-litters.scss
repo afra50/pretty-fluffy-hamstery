@@ -160,15 +160,13 @@
         font-weight: bold;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-        &.aktualne {
-          background-color: $color-accent; // Różowy motywu
-          color: $color-white;
+        &.aktualny {
+          // <-- ZMIENIONE Z .aktualne na .aktualny (bo tak jest w Twoim JS)
+          background-color: $color-secondary; // Używamy ciemniejszego koloru morskiego
+          color: $color-white; // Biały tekst dla kontrastu
         }
         &.archiwum {
-          background-color: color.adjust(
-            $color-text-main,
-            $lightness: 40%
-          ); // Szary
+          background-color: color.adjust($color-text-main, $lightness: 40%);
           color: $color-white;
         }
       }
@@ -177,37 +175,75 @@
     // WIDOK DLA PLANOWANYCH
     &__planned-header {
       background-color: rgba($color-primary, 0.1);
-      padding: 40px 20px;
+      padding: 30px 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 15px;
+      gap: 20px; // Zwiększyłem odstęp, żeby zyskać na czytelności
       border-bottom: 1px dashed rgba($color-primary, 0.4);
 
       .parent-circle {
-        background-color: $color-white;
-        border: 2px solid $color-primary;
-        border-radius: 30px;
-        padding: 10px 15px;
-        font-family: $font-heading;
-        font-size: 0.9rem;
-        font-weight: 700;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
         flex: 1;
 
-        &.mom {
-          color: #fd79a8;
-          border-color: #fd79a8;
+        .avatar {
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          border: 3px solid $color-white;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          background-color: $color-white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          // Fallback, gdy chomik nie ma zdjęcia - wtedy kółko jest kolorowe
+          &.fallback-mom {
+            border-color: #fd79a8;
+            color: #fd79a8;
+            font-size: 1.2rem;
+            font-weight: bold;
+          }
+          &.fallback-dad {
+            border-color: #74b9ff;
+            color: #74b9ff;
+            font-size: 1.2rem;
+            font-weight: bold;
+          }
         }
-        &.dad {
-          color: #74b9ff;
-          border-color: #74b9ff;
+
+        .name-label {
+          font-family: $font-heading;
+          font-size: 0.95rem;
+          font-weight: 700;
+          text-align: center;
+          background-color: $color-white;
+          padding: 4px 12px;
+          border-radius: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+          &.mom {
+            color: #fd79a8;
+          }
+          &.dad {
+            color: #74b9ff;
+          }
         }
       }
 
       .heart-icon {
         animation: pulse 2s infinite;
+        flex-shrink: 0; // Zapobiega ściskaniu serduszka
       }
     }
 
@@ -255,6 +291,7 @@
           line-height: 1.5;
           margin: 0;
           white-space: normal;
+          word-break: break-word; // <-- TO JEST KLUCZOWE: Łamie długie słowa, żeby nie wychodziły za kartę
 
           &.empty {
             font-style: italic;

@@ -154,14 +154,43 @@ const AdminLitters = () => {
 
             {activeTab === "planowany" && (
               <div className="litter-card__planned-header">
-                <div className="parent-circle mom">
-                  ♀ {miot.matka_imie || "Nieznana"}
+                {/* MATKA */}
+                <div className="parent-circle">
+                  {miot.matka_miniaturka ? (
+                    <div className="avatar">
+                      <img
+                        src={`${BACKEND_URL}${miot.matka_miniaturka}`}
+                        alt={miot.matka_imie}
+                      />
+                    </div>
+                  ) : (
+                    <div className="avatar fallback-mom">♀</div>
+                  )}
+                  <span className="name-label mom">
+                    {miot.matka_imie || "Nieznana"}
+                  </span>
                 </div>
+
+                {/* SERDUSZKO */}
                 <div className="heart-icon">
                   <Heart size={24} fill="#fd79a8" color="#fd79a8" />
                 </div>
-                <div className="parent-circle dad">
-                  ♂ {miot.ojciec_imie || "Nieznany"}
+
+                {/* OJCIEC */}
+                <div className="parent-circle">
+                  {miot.ojciec_miniaturka ? (
+                    <div className="avatar">
+                      <img
+                        src={`${BACKEND_URL}${miot.ojciec_miniaturka}`}
+                        alt={miot.ojciec_imie}
+                      />
+                    </div>
+                  ) : (
+                    <div className="avatar fallback-dad">♂</div>
+                  )}
+                  <span className="name-label dad">
+                    {miot.ojciec_imie || "Nieznany"}
+                  </span>
                 </div>
               </div>
             )}

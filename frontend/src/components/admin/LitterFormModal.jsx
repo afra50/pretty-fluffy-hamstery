@@ -42,17 +42,24 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
     { value: "archiwum", label: "Archiwum (W nowych domach)" },
   ];
 
-  // Pobieranie listy chomików do wyboru rodziców
   useEffect(() => {
     const fetchParents = async () => {
       try {
         const response = await hamsterApi.getAll();
         const samice = response.data
           .filter((h) => h.plec === "samica")
-          .map((h) => ({ value: h.id, label: h.imie }));
+          .map((h) => ({
+            value: h.id,
+            label: h.imie,
+            miniaturka: h.miniaturka,
+          }));
         const samce = response.data
           .filter((h) => h.plec === "samiec")
-          .map((h) => ({ value: h.id, label: h.imie }));
+          .map((h) => ({
+            value: h.id,
+            label: h.imie,
+            miniaturka: h.miniaturka,
+          }));
         setHamsters({ samice, samce });
       } catch (error) {
         console.error("Błąd ładowania chomików:", error);
@@ -60,6 +67,42 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
     };
     if (isOpen) fetchParents();
   }, [isOpen]);
+
+  const formatParentOptionLabel = ({ label, miniaturka }, { context }) => (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      {miniaturka ? (
+        <img
+          src={`${BACKEND_URL}${miniaturka}`}
+          alt={label}
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+            marginRight: "10px",
+            objectFit: "cover",
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            width: "30px",
+            height: "30px",
+            borderRadius: "50%",
+            marginRight: "10px",
+            backgroundColor: "#eee",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "12px",
+            color: "#888",
+          }}
+        >
+          {label.charAt(0)}
+        </div>
+      )}
+      <div>{label}</div>
+    </div>
+  );
 
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
@@ -107,15 +150,7 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
     setFiles({ miniaturka: null, zdjecia: [] });
   }, [litterToEdit, isOpen]);
 
-  useEffect(() => {
-    return () => {
-      if (previews.miniaturka[0]?.startsWith("blob:"))
-        URL.revokeObjectURL(previews.miniaturka[0]);
-      previews.zdjecia.forEach((url) => {
-        if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
-      });
-    };
-  }, [previews]);
+  // ---> USUNIĘTO TOKSYCZNY useEffect Z [previews] <---
 
   const clearError = (fieldName) => {
     if (errors[fieldName]) {
@@ -159,12 +194,13 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
       }));
     } else if (name === "zdjecia") {
       const incomingFiles = Array.from(fileList);
+
       const uniqueIncomingFiles = incomingFiles.filter((incomingFile) => {
         return !previews.zdjecia.some((p) => p.includes(incomingFile.name));
       });
 
       const currentTotal = previews.zdjecia.length;
-      const availableSlots = 15 - currentTotal; // Zwiększono limit do 15 zgodnie z backendem
+      const availableSlots = 15 - currentTotal;
 
       if (availableSlots <= 0) {
         toast.error("Galeria jest pełna (maksymalnie 15 zdjęć).");
@@ -182,7 +218,9 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
         ...prev,
         zdjecia: [...prev.zdjecia, ...uniqueIncomingFiles],
       }));
+
       const newUrls = uniqueIncomingFiles.map((f) => URL.createObjectURL(f));
+
       setPreviews((prev) => ({
         ...prev,
         zdjecia: [...prev.zdjecia, ...newUrls],
@@ -208,6 +246,7 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
           return previews.zdjecia[index] !== blobUrl;
         }),
       }));
+      // Ta pojedyncza linijka całkowicie i poprawnie załatwia czyszczenie usuwanego pliku!
       URL.revokeObjectURL(urlToRemove);
     }
   };
@@ -218,7 +257,6 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
 
     if (!formData.nazwa.trim()) newErrors.nazwa = true;
 
-    // Walidacja warunkowa w zależności od statusu
     if (
       formData.status === "planowany" &&
       !formData.spodziewany_termin.trim()
@@ -353,6 +391,7 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
               isClearable
               placeholder="Wybierz samicę..."
               classNamePrefix="react-select"
+              formatOptionLabel={formatParentOptionLabel}
             />
           </div>
 
@@ -368,10 +407,10 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
               isClearable
               placeholder="Wybierz samca..."
               classNamePrefix="react-select"
+              formatOptionLabel={formatParentOptionLabel}
             />
           </div>
 
-          {/* Pola zależne od statusu */}
           {formData.status === "planowany" ? (
             <div className="form-group form-group--full">
               <label className="form-group__label">Spodziewany termin *</label>
@@ -417,28 +456,28 @@ const LitterFormModal = ({ isOpen, onClose, onSuccess, litterToEdit }) => {
             ></textarea>
           </div>
 
-          <ImageDropzone
-            name="miniaturka"
-            label={
-              formData.status === "planowany"
-                ? "Zdjęcie poglądowe (Opcjonalnie)"
-                : "Miniaturka (Zdjęcie Główne)"
-            }
-            disabled={isLoading}
-            previews={previews.miniaturka}
-            onFileChange={handleFileChange}
-            fullWidth={false}
-          />
+          {formData.status !== "planowany" && (
+            <>
+              <ImageDropzone
+                name="miniaturka"
+                label="Miniaturka (Zdjęcie Główne)"
+                disabled={isLoading}
+                previews={previews.miniaturka}
+                onFileChange={handleFileChange}
+                fullWidth={false}
+              />
 
-          <ImageDropzone
-            name="zdjecia"
-            label={`Galeria zdjęć (${previews.zdjecia.length}/15)`}
-            multiple={true}
-            disabled={isLoading}
-            previews={previews.zdjecia}
-            onFileChange={handleFileChange}
-            onRemoveImage={removeGalleryImage}
-          />
+              <ImageDropzone
+                name="zdjecia"
+                label={`Galeria zdjęć (${previews.zdjecia.length}/15)`}
+                multiple={true}
+                disabled={isLoading}
+                previews={previews.zdjecia}
+                onFileChange={handleFileChange}
+                onRemoveImage={removeGalleryImage}
+              />
+            </>
+          )}
         </div>
 
         <div className="form-modal__actions">
