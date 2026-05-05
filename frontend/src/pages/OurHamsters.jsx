@@ -1,165 +1,272 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { hamsterApi } from "../utils/api";
-import Button from "../components/ui/Button";
+import { ZoomIn, X, ChevronLeft, ChevronRight, Cake } from "lucide-react";
 import ErrorState from "../components/ui/ErrorState";
 import Loader from "../components/ui/Loader";
 import "../styles/pages/our-hamsters.scss";
 
-// ==========================================
-// === ZMIENNE GLOBALNE
-// ==========================================
 const IMAGE_BASE_URL = (
-	import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
 ).replace("/api", "");
 
-// ==========================================
-// === GŁÓWNY KOMPONENT
-// ==========================================
 const OurHamsters = () => {
-	// ==========================================
-	// === STANY I HOOKI
-	// ==========================================
-	const [hamsters, setHamsters] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const navigate = useNavigate(); // <-- INICJALIZACJA NAWIGACJI
+  const [hamsters, setHamsters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-	// ==========================================
-	// === EFEKTY UBOCZNE (POBIERANIE DANYCH)
-	// ==========================================
-	useEffect(() => {
-		const fetchHamsters = async () => {
-			try {
-				const response = await hamsterApi.getAll();
-				setHamsters(response.data);
-				setIsLoading(false);
-			} catch (err) {
-				console.error("Błąd pobierania chomików:", err);
-				setError(
-					"Nie udało się załadować zwierzaków. Spróbuj ponownie później.",
-				);
-				setIsLoading(false);
-			}
-		};
+  // Stan aktywnych zakładek ("samice" lub "samiec")
+  const [activeTab, setActiveTab] = useState("samice");
 
-		fetchHamsters();
-	}, []);
+  // Stan dla powiększonej galerii (Lightbox)
+  const [lightbox, setLightbox] = useState({
+    isOpen: false,
+    images: [],
+    currentIndex: 0,
+  });
 
-	// ==========================================
-	// === FILTROWANIE DANYCH (SAMCE / SAMICE)
-	// ==========================================
-	const females = hamsters.filter(
-		(h) => h.plec && h.plec.toLowerCase() === "samica",
-	);
-	const males = hamsters.filter(
-		(h) => h.plec && h.plec.toLowerCase() === "samiec",
-	);
+  useEffect(() => {
+    const fetchHamsters = async () => {
+      try {
+        const response = await hamsterApi.getAll();
+        const data = response.data;
+        setHamsters(data);
 
-	// ==========================================
-	// === FUNKCJE POMOCNICZE (RENDEROWANIE KART)
-	// ==========================================
-	const renderHamsterGrid = (hamsterList) => (
-		<div className="our_hamsters_grid">
-			{hamsterList.map((hamster) => (
-				<div
-					className="our_hamsters_card"
-					key={hamster.id}
-					onClick={() => navigate(`/chomik/${hamster.id}`)} // <-- CAŁA KARTA JEST KLIKALNA
-				>
-					<div className="our_hamsters_image_box">
-						<span className="our_hamsters_badge">
-							{hamster.plec || "Nieznana"}
-						</span>
-						<img
-							src={
-								hamster.miniaturka
-									? `${IMAGE_BASE_URL}${hamster.miniaturka}`
-									: "/placeholder.jpg"
-							}
-							alt={hamster.imie}
-							className="our_hamsters_img"
-						/>
-					</div>
-					<div className="our_hamsters_content">
-						<h2 className="our_hamsters_card_title">
-							{/* <-- ODDZIELONY PRZYDOMEK Z NOWĄ KLASĄ */}
-							<span className="our_hamsters_prefix">
-								{hamster.przydomek}
-							</span>{" "}
-							{hamster.imie}
-						</h2>
+        // Ustawiamy domyślną zakładkę po załadowaniu danych
+        const hasFemales = data.some(
+          (h) => h.plec && h.plec.toLowerCase() === "samica",
+        );
+        if (hasFemales) {
+          setActiveTab("samice");
+        } else {
+          setActiveTab("samiec");
+        }
 
-						<div className="our_hamsters_details">
-							<p>
-								<strong>Data urodzenia:</strong>{" "}
-								{hamster.data_urodzenia
-									? new Date(hamster.data_urodzenia).toLocaleDateString("pl-PL")
-									: "Brak danych"}
-							</p>
-							<p>
-								<strong>Umaszczenie:</strong> {hamster.umaszczenie || "Brak"}
-							</p>
-						</div>
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Błąd pobierania chomików:", err);
+        setError(
+          "Nie udało się załadować zwierzaków. Spróbuj ponownie później.",
+        );
+        setIsLoading(false);
+      }
+    };
+    fetchHamsters();
+  }, []);
 
-						{/* Button zostaje wizualnie, ale nawigację i tak łapie główny div */}
-						<Button
-							variant="outline"
-							to={`/chomik/${hamster.id}`}
-							className="our_hamsters_btn">
-							Zobacz szczegóły
-						</Button>
-					</div>
-				</div>
-			))}
-		</div>
-	);
+  const females = hamsters.filter(
+    (h) => h.plec && h.plec.toLowerCase() === "samica",
+  );
+  const males = hamsters.filter(
+    (h) => h.plec && h.plec.toLowerCase() === "samiec",
+  );
 
-	// ==========================================
-	// === GŁÓWNY RENDER
-	// ==========================================
-	return (
-		<section className="our_hamsters">
-			<div className="our_hamsters_header">
-				<h1 className="our_hamsters_title">Nasze Zwierzęta</h1>
-				<p className="our_hamsters_subtitle">
-					Poznaj maluchy oraz dorosłe osobniki z naszej hodowli.
-				</p>
-			</div>
+  // --- FUNKCJE GALERII (LIGHTBOX) ---
+  const openLightbox = (hamster, startIndex) => {
+    const allImages = [];
+    if (hamster.miniaturka) allImages.push(hamster.miniaturka);
+    if (hamster.zdjecia && hamster.zdjecia.length > 0) {
+      allImages.push(...hamster.zdjecia);
+    }
 
-			<div className="our_hamsters_container">
-				{/* <-- ZMIANA: PODPIĘTY KOMPONENT LOADERA */}
-				{isLoading && <Loader />}
+    setLightbox({
+      isOpen: true,
+      images: allImages.map((img) => `${IMAGE_BASE_URL}${img}`),
+      currentIndex: startIndex,
+    });
+  };
 
-				{/* <-- ZMIANA: WYŚWIETLANIE KOMPONENTU BŁĘDU ZAMIAST SUROWEGO DIVA */}
-				{error && <ErrorState message={error} />}
+  const closeLightbox = () => setLightbox({ ...lightbox, isOpen: false });
 
-				{!isLoading && !error && hamsters.length === 0 && (
-					<div className="our_hamsters_empty">
-						Obecnie nie mamy żadnych chomików do wyświetlenia. Wróć tu wkrótce!
-					</div>
-				)}
+  const nextImage = (e) => {
+    e.stopPropagation();
+    setLightbox((prev) => ({
+      ...prev,
+      currentIndex: (prev.currentIndex + 1) % prev.images.length,
+    }));
+  };
 
-				{!isLoading && !error && hamsters.length > 0 && (
-					<>
-						{females.length > 0 && (
-							<div className="our_hamsters_group">
-								<h2 className="our_hamsters_group_title">Samice</h2>
-								{renderHamsterGrid(females)}
-							</div>
-						)}
+  const prevImage = (e) => {
+    e.stopPropagation();
+    setLightbox((prev) => ({
+      ...prev,
+      currentIndex:
+        (prev.currentIndex - 1 + prev.images.length) % prev.images.length,
+    }));
+  };
 
-						{males.length > 0 && (
-							<div className="our_hamsters_group">
-								<h2 className="our_hamsters_group_title">Samce</h2>
-								{renderHamsterGrid(males)}
-							</div>
-						)}
-					</>
-				)}
-			</div>
-		</section>
-	);
+  // --- RENDEROWANIE ZWIERZAKÓW (UKŁAD EDITORIAL) ---
+  const renderEditorialList = (hamsterList) => (
+    <div className="hamster_editorial_list">
+      {hamsterList.map((hamster) => {
+        const galleryImages = hamster.zdjecia || [];
+
+        return (
+          <div className="hamster_editorial_block" key={hamster.id}>
+            <div
+              className="editorial_visual"
+              onClick={() => openLightbox(hamster, 0)}
+            >
+              <div className="main_image_wrapper">
+                <img
+                  src={
+                    hamster.miniaturka
+                      ? `${IMAGE_BASE_URL}${hamster.miniaturka}`
+                      : "/placeholder.jpg"
+                  }
+                  alt={hamster.imie}
+                />
+                <div className="zoom_overlay">
+                  <ZoomIn size={32} />
+                  <span>Powiększ zdjęcia</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="editorial_content">
+              <div className="editorial_header">
+                <span className="prefix">{hamster.przydomek}</span>
+                <h2>{hamster.imie}</h2>
+              </div>
+
+              <div className="editorial_badges">
+                <span
+                  className={`badge_gender ${hamster.plec?.toLowerCase() === "samica" ? "badge_female" : "badge_male"}`}
+                >
+                  {hamster.plec || "Nieznana"}
+                </span>
+                <span className="badge_outline">
+                  {hamster.umaszczenie || "Brak danych"}
+                </span>
+                <span className="badge_outline badge_date">
+                  <Cake size={16} className="badge_icon" />
+                  {/* ZMIANA: Dynamiczne słowo Urodzona / Urodzony */}
+                  {hamster.plec?.toLowerCase() === "samica"
+                    ? "Urodzona: "
+                    : "Urodzony: "}
+                  {hamster.data_urodzenia
+                    ? new Date(hamster.data_urodzenia).toLocaleDateString(
+                        "pl-PL",
+                      )
+                    : "Brak"}
+                </span>
+              </div>
+
+              {hamster.opis && <p className="editorial_desc">{hamster.opis}</p>}
+
+              {galleryImages.length > 0 && (
+                <div className="editorial_mini_gallery">
+                  {galleryImages.slice(0, 4).map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="mini_gallery_item"
+                      onClick={() => openLightbox(hamster, idx + 1)}
+                    >
+                      <img src={`${IMAGE_BASE_URL}${img}`} alt="Galeria" />
+                      {idx === 3 && galleryImages.length > 4 && (
+                        <div className="more_overlay">
+                          +{galleryImages.length - 3}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <>
+      <section className="our_hamsters_page">
+        <div className="page_header">
+          <h1>Nasze Chomiki</h1>
+          <p>
+            Poznaj maluchy oraz dorosłe osobniki, które tworzą naszą hodowlę.
+            Każdy z nich ma swój unikalny charakter.
+          </p>
+        </div>
+
+        <div className="page_container">
+          {isLoading && <Loader />}
+          {error && <ErrorState message={error} />}
+
+          {!isLoading && !error && hamsters.length === 0 && (
+            <div className="empty_state">
+              Obecnie nie mamy żadnych chomików do wyświetlenia.
+            </div>
+          )}
+
+          {!isLoading && !error && hamsters.length > 0 && (
+            <div className="tabs_container">
+              {/* --- NAWIGACJA ZAKŁADEK --- */}
+              <div className="category_tabs">
+                {females.length > 0 && (
+                  <button
+                    // DODANA KLASA: tab_female
+                    className={`tab_btn tab_female ${activeTab === "samice" ? "active" : ""}`}
+                    onClick={() => setActiveTab("samice")}
+                  >
+                    Samice
+                  </button>
+                )}
+                {males.length > 0 && (
+                  <button
+                    // DODANA KLASA: tab_male
+                    className={`tab_btn tab_male ${activeTab === "samiec" ? "active" : ""}`}
+                    onClick={() => setActiveTab("samiec")}
+                  >
+                    Samce
+                  </button>
+                )}
+              </div>
+
+              {/* --- ZAWARTOŚĆ ZAKŁADEK --- */}
+              <div className="tab_content">
+                {activeTab === "samice" && renderEditorialList(females)}
+                {activeTab === "samiec" && renderEditorialList(males)}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {lightbox.isOpen && (
+        <div className="lightbox_overlay" onClick={closeLightbox}>
+          <button className="lightbox_close" onClick={closeLightbox}>
+            <X size={32} />
+          </button>
+
+          {lightbox.images.length > 1 && (
+            <button className="lightbox_nav lightbox_prev" onClick={prevImage}>
+              <ChevronLeft size={40} />
+            </button>
+          )}
+
+          <div
+            className="lightbox_image_container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightbox.images[lightbox.currentIndex]}
+              alt="Powiększone zdjęcie"
+            />
+            <div className="lightbox_counter">
+              {lightbox.currentIndex + 1} / {lightbox.images.length}
+            </div>
+          </div>
+
+          {lightbox.images.length > 1 && (
+            <button className="lightbox_nav lightbox_next" onClick={nextImage}>
+              <ChevronRight size={40} />
+            </button>
+          )}
+        </div>
+      )}
+    </>
+  );
 };
 
 export default OurHamsters;

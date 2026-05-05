@@ -6,6 +6,7 @@ EMILA
 - domena, google search console, rekord TXT
 - tunelowanie cloudflare
 - server.js, app.js, api.js
+- przemyslec co z chomikami ktore odeszly, bo jak je usuna to w miocie zrobi sie ?, a jak zostawia to zakladka nasze chomiki sie zasyfi umarnietymi
 
 KRZYSIEK
 - zakładka mioty front + wykorzystanie integracji z api.js
