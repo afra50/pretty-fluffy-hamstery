@@ -7,16 +7,16 @@ import HomeGuide from "../components/home/HomeGuide";
 import HomeCTA from "../components/home/HomeCTA";
 
 const Home = () => {
-  return (
-    <div className="home_page">
-      <HomeHero />
-      <HomeFeatures />
-      <HomeLitters />
-      <HomeFacebookFeed /> {/* <-- DODANE TUTAJ */}
-      <HomeGuide />
-      <HomeCTA />
-    </div>
-  );
+	return (
+		<div className="home_page">
+			<HomeHero />
+			<HomeFeatures />
+			<HomeLitters />
+			<HomeFacebookFeed /> {/* <-- DODANE TUTAJ */}
+			<HomeGuide />
+			<HomeCTA />
+		</div>
+	);
 };
 
 export default Home;

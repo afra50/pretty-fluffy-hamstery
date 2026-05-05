@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { litterApi } from "../utils/api";
-import Button from "../components/ui/Button";
+import { ZoomIn, CalendarDays, Users } from "lucide-react";
 import ErrorState from "../components/ui/ErrorState";
 import Loader from "../components/ui/Loader";
+import Lightbox from "../components/ui/Lightbox"; // <-- IMPORT NASZEGO KOMPONENTU
 import "../styles/pages/litters.scss";
 
 const IMAGE_BASE_URL = (
@@ -14,19 +14,42 @@ const Litters = () => {
 	const [litters, setLitters] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const navigate = useNavigate();
+
+	const [activeTab, setActiveTab] = useState("aktualny");
+
+	// Skrocony stan dla Lightboxa
+	const [lightbox, setLightbox] = useState({
+		isOpen: false,
+		images: [],
+		currentIndex: 0,
+	});
 
 	useEffect(() => {
 		const fetchLitters = async () => {
 			try {
 				const response = await litterApi.getAll();
-				setLitters(response.data);
+				const data = response.data;
+				setLitters(data);
+
+				const hasCurrent = data.some(
+					(l) => l.status && l.status.toLowerCase() === "aktualny",
+				);
+				const hasPlanned = data.some(
+					(l) => l.status && l.status.toLowerCase() === "planowany",
+				);
+
+				if (hasCurrent) {
+					setActiveTab("aktualny");
+				} else if (hasPlanned) {
+					setActiveTab("planowany");
+				} else {
+					setActiveTab("archiwum");
+				}
+
 				setIsLoading(false);
 			} catch (err) {
 				console.error("Blad pobierania miotow:", err);
-				setError(
-					"Nie udalo sie zaladowac informacji o miotach. Sprobuj ponownie pozniej.",
-				);
+				setError("Nie udalo sie zaladowac miotow. Sprobuj ponownie pozniej.");
 				setIsLoading(false);
 			}
 		};
@@ -43,109 +66,186 @@ const Litters = () => {
 		(l) => l.status && l.status.toLowerCase() === "archiwum",
 	);
 
-	const renderLitterGrid = (litterList) => (
-		<div className="litters_grid">
-			{litterList.map((litter) => (
-				<div
-					className="litters_card"
-					key={litter.id}
-					onClick={() => navigate(`/miot/${litter.id}`)}>
-					<div className="litters_image_box">
-						<span className={`litters_badge badge_${litter.status}`}>
-							{litter.status}
-						</span>
-						<img
-							src={
-								litter.miniaturka
-									? `${IMAGE_BASE_URL}${litter.miniaturka}`
-									: "/placeholder.jpg"
-							}
-							alt={litter.nazwa}
-							className="litters_img"
-						/>
-					</div>
-					<div className="litters_content">
-						<h2 className="litters_card_title">
-							<span className="litters_prefix">Miot</span> {litter.nazwa}
-						</h2>
-						<div className="litters_details">
-							{litter.status === "planowany" ? (
-								<p>
-									<strong>Spodziewany termin:</strong>{" "}
-									{litter.spodziewany_termin || "Brak danych"}
-								</p>
-							) : (
-								<p>
-									<strong>Data urodzenia:</strong>{" "}
-									{litter.data_urodzenia
-										? new Date(litter.data_urodzenia).toLocaleDateString(
-												"pl-PL",
-											)
-										: "Brak danych"}
-								</p>
-							)}
-							<p>
-								<strong>Rodzice:</strong> {litter.matka_imie || "?"} x{" "}
-								{litter.ojciec_imie || "?"}
-							</p>
+	// --- FUNKCJE DLA KOMPONENTU LIGHTBOX ---
+	const openLightbox = (litter, startIndex) => {
+		const allImages = [];
+		if (litter.miniaturka) allImages.push(litter.miniaturka);
+		if (litter.zdjecia && litter.zdjecia.length > 0) {
+			allImages.push(...litter.zdjecia);
+		}
+
+		setLightbox({
+			isOpen: true,
+			images: allImages.map((img) => `${IMAGE_BASE_URL}${img}`),
+			currentIndex: startIndex,
+		});
+	};
+
+	const closeLightbox = () => setLightbox({ ...lightbox, isOpen: false });
+
+	const nextImage = () => {
+		setLightbox((prev) => ({
+			...prev,
+			currentIndex: (prev.currentIndex + 1) % prev.images.length,
+		}));
+	};
+
+	const prevImage = () => {
+		setLightbox((prev) => ({
+			...prev,
+			currentIndex:
+				(prev.currentIndex - 1 + prev.images.length) % prev.images.length,
+		}));
+	};
+
+	// --- RENDEROWANIE MIOTOW ---
+	const renderEditorialList = (litterList) => (
+		<div className="litter_editorial_list">
+			{litterList.map((litter) => {
+				const galleryImages = litter.zdjecia || [];
+
+				return (
+					<div className="litter_editorial_block" key={litter.id}>
+						<div
+							className="editorial_visual"
+							onClick={() => openLightbox(litter, 0)}>
+							<div className="main_image_wrapper">
+								<img
+									src={
+										litter.miniaturka
+											? `${IMAGE_BASE_URL}${litter.miniaturka}`
+											: "/placeholder.jpg"
+									}
+									alt={litter.nazwa}
+								/>
+								<div className="zoom_overlay">
+									<ZoomIn size={32} />
+									<span>Powieksz zdjecia</span>
+								</div>
+							</div>
 						</div>
-						<Button
-							variant="outline"
-							to={`/miot/${litter.id}`}
-							className="litters_btn">
-							Zobacz szczegoly
-						</Button>
+
+						<div className="editorial_content">
+							<div className="editorial_header">
+								<span className="prefix">Pretty Fluffy</span>
+								<h2>{litter.nazwa}</h2>
+							</div>
+
+							<div className="editorial_badges">
+								<span
+									className={`badge_status badge_${litter.status?.toLowerCase()}`}>
+									{litter.status || "Nieznany"}
+								</span>
+
+								<span className="badge_outline">
+									<Users size={16} className="badge_icon" />
+									{litter.matka_imie || "?"} x {litter.ojciec_imie || "?"}
+								</span>
+
+								<span className="badge_outline badge_date">
+									<CalendarDays size={16} className="badge_icon" />
+									{litter.status?.toLowerCase() === "planowany"
+										? `Spodziewane: ${litter.spodziewany_termin || "Brak"}`
+										: `Urodzone: ${litter.data_urodzenia ? new Date(litter.data_urodzenia).toLocaleDateString("pl-PL") : "Brak"}`}
+								</span>
+							</div>
+
+							{litter.opis && <p className="editorial_desc">{litter.opis}</p>}
+
+							{galleryImages.length > 0 && (
+								<div className="editorial_mini_gallery">
+									{galleryImages.slice(0, 4).map((img, idx) => (
+										<div
+											key={idx}
+											className="mini_gallery_item"
+											onClick={() => openLightbox(litter, idx + 1)}>
+											<img src={`${IMAGE_BASE_URL}${img}`} alt="Galeria" />
+											{idx === 3 && galleryImages.length > 4 && (
+												<div className="more_overlay">
+													+{galleryImages.length - 3}
+												</div>
+											)}
+										</div>
+									))}
+								</div>
+							)}
+						</div>
 					</div>
-				</div>
-			))}
+				);
+			})}
 		</div>
 	);
 
 	return (
-		<section className="litters">
-			<div className="litters_header">
-				<h1 className="litters_title">Mioty</h1>
-				<p className="litters_subtitle">
-					Przegladaj aktualne, planowane oraz archiwalne mioty z naszej hodowli.
-				</p>
-			</div>
+		<>
+			<section className="litters_page">
+				<div className="page_header">
+					<h1>Nasze Mioty</h1>
+					<p>
+						Poznaj aktualne i planowane polaczenia w naszej hodowli, a takze
+						przejrzyj archiwum poprzednich miotow.
+					</p>
+				</div>
 
-			<div className="litters_container">
-				{isLoading && <Loader />}
-				{error && <ErrorState message={error} />}
-				{!isLoading && !error && litters.length === 0 && (
-					<div className="litters_empty">Obecnie nie mamy zadnych miotow.</div>
-				)}
-				{!isLoading && !error && litters.length > 0 && (
-					<>
-						{currentLitters.length > 0 && (
-							<div className="litters_group">
-								<h2 className="litters_group_title group_current">
-									Aktualne Mioty
-								</h2>
-								{renderLitterGrid(currentLitters)}
+				<div className="page_container">
+					{isLoading && <Loader />}
+					{error && <ErrorState message={error} />}
+
+					{!isLoading && !error && litters.length === 0 && (
+						<div className="empty_state">
+							Obecnie nie mamy zadnych miotow do wyswietlenia.
+						</div>
+					)}
+
+					{!isLoading && !error && litters.length > 0 && (
+						<div className="tabs_container">
+							<div className="category_tabs">
+								{currentLitters.length > 0 && (
+									<button
+										className={`tab_btn tab_current ${activeTab === "aktualny" ? "active" : ""}`}
+										onClick={() => setActiveTab("aktualny")}>
+										Aktualne
+									</button>
+								)}
+								{plannedLitters.length > 0 && (
+									<button
+										className={`tab_btn tab_planned ${activeTab === "planowany" ? "active" : ""}`}
+										onClick={() => setActiveTab("planowany")}>
+										Planowane
+									</button>
+								)}
+								{archiveLitters.length > 0 && (
+									<button
+										className={`tab_btn tab_archive ${activeTab === "archiwum" ? "active" : ""}`}
+										onClick={() => setActiveTab("archiwum")}>
+										Archiwum
+									</button>
+								)}
 							</div>
-						)}
-						{plannedLitters.length > 0 && (
-							<div className="litters_group">
-								<h2 className="litters_group_title group_planned">
-									Planowane Mioty
-								</h2>
-								{renderLitterGrid(plannedLitters)}
+
+							<div className="tab_content">
+								{activeTab === "aktualny" &&
+									renderEditorialList(currentLitters)}
+								{activeTab === "planowany" &&
+									renderEditorialList(plannedLitters)}
+								{activeTab === "archiwum" &&
+									renderEditorialList(archiveLitters)}
 							</div>
-						)}
-						{archiveLitters.length > 0 && (
-							<div className="litters_group">
-								<h2 className="litters_group_title group_archive">
-									Archiwum Miotow
-								</h2>
-								{renderLitterGrid(archiveLitters)}
-							</div>
-						)}
-					</>
-				)}
-			</div>
-		</section>
+						</div>
+					)}
+				</div>
+			</section>
+
+			{/* --- CZYSTY, REUZYWALNY KOMPONENT LIGHTBOXA --- */}
+			<Lightbox
+				isOpen={lightbox.isOpen}
+				images={lightbox.images}
+				currentIndex={lightbox.currentIndex}
+				onClose={closeLightbox}
+				onNext={nextImage}
+				onPrev={prevImage}
+			/>
+		</>
 	);
 };
 

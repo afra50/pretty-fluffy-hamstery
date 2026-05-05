@@ -12,7 +12,7 @@
 	.header_container {
 		max-width: 1400px;
 		margin: 0 auto;
-		padding: 0 10px; // <-- Ucięte do 10px
+		padding: 0 10px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -24,11 +24,11 @@
 
 		@media (max-width: 992px) {
 			height: 100px;
-			padding: 0 8px; // <-- Ucięte do 8px na mobile
+			padding: 0 8px;
 		}
 	}
 
-	// --- LOGO (NIETYKALNE) ---
+	// --- LOGO ---
 	.header_logo {
 		flex-shrink: 0;
 		z-index: 1002;
@@ -78,34 +78,36 @@
 		}
 	}
 
-	// --- NAWIGACJA MOBILNA ---
 	.header_nav {
 		display: flex;
 		align-items: center;
 
 		@media (max-width: 992px) {
-			position: fixed;
-			top: 0;
+			position: absolute;
+			top: 100%;
 			left: 0;
 			width: 100%;
-			height: 100vh;
 			background-color: $color-white;
 			flex-direction: column;
-			justify-content: center;
-			z-index: 1001;
+			justify-content: flex-start;
+			border-top: 1px solid rgba(0, 0, 0, 0.05);
+			box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.1);
+			z-index: 999;
 
-			visibility: hidden;
+			overflow: hidden;
+			max-height: 0;
 			opacity: 0;
-			transform: translateX(100%);
+			pointer-events: none;
+			will-change: max-height, opacity;
+			transform: translateZ(0);
 			transition:
-				transform 0.4s ease-in-out,
-				visibility 0.4s,
-				opacity 0.4s;
+				max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+				opacity 0.3s ease-in-out;
 
 			&.header_nav_active {
-				visibility: visible;
+				max-height: 400px;
 				opacity: 1;
-				transform: translateX(0);
+				pointer-events: auto;
 			}
 		}
 	}
@@ -124,7 +126,11 @@
 			flex-direction: column;
 			align-items: center;
 			width: 100%;
-			gap: 25px;
+			gap: 15px;
+			padding: 20px 0 30px 0;
+		}
+		@media (max-width: 480px) {
+			gap: 10px;
 		}
 	}
 
@@ -133,10 +139,39 @@
 			width: 100%;
 			display: flex;
 			justify-content: center;
+
+			// POCZĄTKOWY STAN LINKÓW
+			opacity: 0;
+			transform: translateY(-8px);
+			transition: all 0.3s ease;
 		}
 	}
 
-	// --- TWOJA WODA (NIETYKALNA) ---
+	// --- EFEKT KASKADY (Mocno wygładzony) ---
+	.header_nav_active .header_item {
+		@media (max-width: 992px) {
+			opacity: 1;
+			transform: translateY(0);
+
+			&:nth-child(1) {
+				transition-delay: 0.1s;
+			}
+			&:nth-child(2) {
+				transition-delay: 0.15s;
+			}
+			&:nth-child(3) {
+				transition-delay: 0.2s;
+			}
+			&:nth-child(4) {
+				transition-delay: 0.25s;
+			}
+			&:nth-child(5) {
+				transition-delay: 0.3s;
+			}
+		}
+	}
+
+	// --- LINKI MENU ---
 	.header_link {
 		font-family: $font-heading;
 		font-size: 1.1rem;
@@ -161,8 +196,12 @@
 			font-size: 1rem;
 		}
 		@media (max-width: 992px) {
-			font-size: 1.8rem;
-			padding: 15px;
+			font-size: 1.3rem;
+			padding: 12px;
+		}
+		@media (max-width: 480px) {
+			font-size: 1.15rem;
+			padding: 10px;
 		}
 
 		&::before {
@@ -193,7 +232,7 @@
 		}
 	}
 
-	// --- BURGER (STABILNY) ---
+	// --- BURGER ---
 	.header_burger {
 		display: none;
 		background: none;

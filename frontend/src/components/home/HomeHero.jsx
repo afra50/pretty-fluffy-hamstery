@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "../ui/Button";
+import Loader from "../ui/Loader";
+import ErrorState from "../ui/ErrorState";
 import "../../styles/components/home/home_hero.scss";
 import heroImg from "../../assets/hero-bg.webp";
 

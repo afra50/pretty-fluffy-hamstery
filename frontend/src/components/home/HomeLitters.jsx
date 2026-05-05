@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { litterApi } from "../../utils/api";
+import Loader from "../ui/Loader";
+import ErrorState from "../ui/ErrorState";
 import "../../styles/components/home/home_litters.scss";
 
 const getBaseUrl = () => {

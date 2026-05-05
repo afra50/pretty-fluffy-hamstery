@@ -1,6 +1,8 @@
 import React from "react";
 import { BookOpen } from "lucide-react";
 import Button from "../ui/Button";
+import Loader from "../ui/Loader";
+import ErrorState from "../ui/ErrorState";
 import "../../styles/components/home/home_guide.scss";
 import guideImg from "../../assets/guide-home.jpg";
 

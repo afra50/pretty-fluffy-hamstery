@@ -1,5 +1,7 @@
 import React from "react";
 import { ShieldCheck, Baby, Heart } from "lucide-react";
+import Loader from "../ui/Loader";
+import ErrorState from "../ui/ErrorState";
 import "../../styles/components/home/home_features.scss";
 
 const HomeFeatures = () => {

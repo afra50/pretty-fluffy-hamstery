@@ -1,0 +1,109 @@
+@use "../../variables" as *;
+
+.global_lightbox_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.9);
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(5px); // To daje ten fajny efekt
+
+	.lightbox_close {
+		position: absolute;
+		top: 30px;
+		right: 30px;
+		background: none;
+		border: none;
+		color: white;
+		cursor: pointer;
+		opacity: 0.7;
+		transition:
+			opacity 0.3s,
+			transform 0.3s,
+			color 0.3s;
+		z-index: 10;
+
+		&:hover {
+			opacity: 1;
+			transform: scale(1.2);
+			color: $color-accent; // Kolor po najechaniu (z Home)
+		}
+	}
+
+	.lightbox_nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		background: transparent;
+		border: none;
+		color: white;
+		width: 80px;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		transition:
+			color 0.3s,
+			transform 0.3s;
+
+		&:hover {
+			color: $color-accent;
+			transform: translateY(-50%) scale(1.1);
+		}
+
+		&.lightbox_prev {
+			left: 0;
+		}
+		&.lightbox_next {
+			right: 0;
+		}
+
+		@media (max-width: 768px) {
+			width: 50px;
+		}
+	}
+
+	.lightbox_image_container {
+		position: relative;
+		max-width: 80vw;
+		max-height: 85vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.lightbox_img {
+			max-width: 100%;
+			max-height: 80vh;
+			object-fit: contain;
+			border-radius: 12px;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+			animation: fadeIn 0.3s ease-in-out;
+			user-select: none;
+		}
+
+		.lightbox_counter {
+			margin-top: 15px;
+			color: rgba(255, 255, 255, 0.6);
+			font-family: $font-body;
+			letter-spacing: 2px;
+			font-weight: bold;
+		}
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}

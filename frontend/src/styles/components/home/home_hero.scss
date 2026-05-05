@@ -3,14 +3,17 @@
 .home_hero {
 	position: relative;
 	width: 100%;
-	// Skróciliśmy min-height, żeby nie zajmował całego ekranu
 	min-height: clamp(500px, 70vh, 750px);
 	display: flex;
 	align-items: center;
 	overflow: hidden;
 	background-color: $color-secondary;
 
-	// Klasa dla samego zdjęcia tła
+	@media (max-width: 768px) {
+		align-items: flex-end;
+		padding-bottom: 40px;
+	}
+
 	.home_hero_bg {
 		position: absolute;
 		top: 0;
@@ -19,6 +22,10 @@
 		height: 100%;
 		object-fit: cover;
 		z-index: 0;
+
+		@media (max-width: 768px) {
+			object-position: center 30%;
+		}
 	}
 
 	.home_hero_overlay {
@@ -33,6 +40,14 @@
 			rgba(16, 42, 67, 0.4) 100%
 		);
 		z-index: 1;
+
+		@media (max-width: 768px) {
+			background: linear-gradient(
+				to top,
+				rgba(16, 42, 67, 0.95) 0%,
+				rgba(16, 42, 67, 0.4) 100%
+			);
+		}
 	}
 
 	.home_container {
@@ -43,49 +58,99 @@
 		z-index: 2;
 		width: 100%;
 
+		@media (max-width: 480px) {
+			padding: 0 15px;
+		}
+
 		@media (min-width: 2500px) {
 			max-width: 1600px;
 		}
 	}
 
 	.home_hero_content {
-		// Poszerzyliśmy kontener, żeby tekst się nie łamał tak agresywnie
 		max-width: 850px;
 		color: $color-white;
 		animation: slideUpFade 0.8s ease-out;
+
+		@media (max-width: 768px) {
+			text-align: center;
+			margin: 0 auto;
+		}
 
 		.home_badge {
 			font-family: $font-body;
 			text-transform: uppercase;
 			letter-spacing: 2px;
-			font-size: 0.85rem;
 			color: $color-accent;
 			font-weight: 700;
-			display: block;
+			display: inline-block;
 			margin-bottom: 15px;
+			font-size: 0.85rem;
+
+			@media (max-width: 480px) {
+				font-size: 0.7rem;
+				margin-bottom: 10px;
+				letter-spacing: 1px;
+			}
 		}
 
 		.home_title {
 			font-family: $font-heading;
-			// Zmniejszyliśmy font, teraz nie "wybuchnie" na dużych monitorach
-			font-size: clamp(2rem, 3.5vw, 3.2rem);
-			line-height: 1.15;
-			margin-bottom: 25px;
 			color: $color-white;
+			margin-bottom: 25px;
+			line-height: 1.15;
+			font-size: 3.2rem;
+
+			@media (max-width: 992px) {
+				font-size: 2.5rem;
+			}
+
+			@media (max-width: 480px) {
+				font-size: 1.6rem;
+				line-height: 1.25;
+				margin-bottom: 15px;
+			}
+
+			@media (max-width: 380px) {
+				font-size: 1.45rem;
+			}
 		}
 
 		.home_desc {
-			font-size: clamp(1rem, 1.2vw, 1.1rem);
 			line-height: 1.6;
 			margin-bottom: 40px;
 			opacity: 0.9;
-			max-width: 650px; // Opis zostawiamy węższy, żeby lepiej się czytało
+			max-width: 650px;
+			font-size: 1.1rem;
+
+			@media (max-width: 768px) {
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			@media (max-width: 480px) {
+				font-size: 0.95rem;
+				margin-bottom: 25px;
+				line-height: 1.5;
+			}
+
+			@media (max-width: 380px) {
+				font-size: 0.9rem;
+			}
 		}
 
 		.home_actions {
 			display: flex;
 			gap: 15px;
 			flex-wrap: wrap;
+
+			@media (max-width: 768px) {
+				justify-content: center;
+			}
+
+			@media (max-width: 480px) {
+				gap: 10px;
+			}
 		}
 	}
 }
