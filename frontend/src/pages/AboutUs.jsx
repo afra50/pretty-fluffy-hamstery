@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 // ==========================================
 // === IMPORTY ZDJĘĆ (Podmień na swoje ścieżki!)
 // ==========================================
-import heroImage from "../assets/4.jpg";
+import heroImage from "../assets/hero-baner.webp";
 import imgKlementyna from "../assets/klementyna-dyplom.jpg";
 import imgKrokiet from "../assets/krokiet.jpg";
 import imgChomikarium from "../assets/chomikarium.jpg";
@@ -120,7 +120,7 @@ const AboutUs = () => {
 						Zarejestrowana Hodowla Chomików Rodowodowych • Wrocław
 					</p>
 					<div className="cinematic_scroll_indicator">
-						↓ Poznaj nasze zasady ↓
+						↓ Poznaj naszą historię ↓
 					</div>
 				</div>
 			</div>
