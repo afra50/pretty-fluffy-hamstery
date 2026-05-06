@@ -1,15 +1,23 @@
 @use "sass:color";
 @use "../variables" as *;
 
-$color-female: #d68798; // Brudny róż
-$color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
+// ==========================================
+// === ZMIENNE LOKALNE
+// ==========================================
+$color-female: #d68798;
+$color-male: #7aa5b8;
 
+// ==========================================
+// === GŁÓWNY KONTENER STRONY
+// ==========================================
 .our_hamsters_page {
 	background-color: $color-white;
 	min-height: 80vh;
-	// ZMNIEJSZONO paddingi górne/dolne sekcji
 	padding: clamp(40px, 6vw, 80px) 0;
 
+	// ==========================================
+	// === NAGŁÓWEK STRONY
+	// ==========================================
 	.page_header {
 		text-align: center;
 		max-width: 800px;
@@ -19,7 +27,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		h1 {
 			font-family: $font-heading;
 			color: $color-secondary;
-			// ZMNIEJSZONO font nagłówka
 			font-size: clamp(1.8rem, 4vw, 3.2rem);
 			margin-bottom: 15px;
 		}
@@ -27,7 +34,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		p {
 			font-family: $font-body;
 			color: $color-text-main;
-			// ZMNIEJSZONO font opisu
 			font-size: clamp(0.95rem, 1.2vw, 1.15rem);
 			line-height: 1.6;
 		}
@@ -39,7 +45,9 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		padding: 0 20px;
 	}
 
-	// --- ZAKŁADKI (TABS) ---
+	// ==========================================
+	// === ZAKŁADKI KATEGORII (TABS)
+	// ==========================================
 	.category_tabs {
 		display: flex;
 		justify-content: center;
@@ -52,7 +60,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		.tab_btn {
 			background: none;
 			border: 2px solid transparent;
-			// ZMNIEJSZONO przyciski zakładek
 			padding: 10px 25px;
 			border-radius: 30px;
 			font-family: $font-heading;
@@ -84,6 +91,9 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		animation: fadeInTab 0.5s ease;
 	}
 
+	// ==========================================
+	// === ANIMACJE
+	// ==========================================
 	@keyframes fadeInTab {
 		from {
 			opacity: 0;
@@ -96,18 +106,18 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		}
 	}
 
-	// --- UKŁAD EDITORIAL ---
+	// ==========================================
+	// === UKŁAD LISTY CHOMIKÓW (EDITORIAL)
+	// ==========================================
 	.hamster_editorial_list {
 		display: flex;
 		flex-direction: column;
-		// ZMNIEJSZONO odstępy między chomikami
 		gap: clamp(50px, 8vw, 80px);
 	}
 
 	.hamster_editorial_block {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		// ZMNIEJSZONO odstęp między zdjęciem a tekstem
 		gap: clamp(25px, 5vw, 50px);
 		align-items: center;
 
@@ -137,7 +147,9 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		}
 	}
 
-	// --- ZDJĘCIE GŁÓWNE ---
+	// ==========================================
+	// === ZDJĘCIE GŁÓWNE
+	// ==========================================
 	.editorial_visual {
 		position: relative;
 		cursor: pointer;
@@ -196,7 +208,9 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		}
 	}
 
-	// --- TREŚĆ ---
+	// ==========================================
+	// === TREŚĆ OPISU I ODZNAKI
+	// ==========================================
 	.editorial_content {
 		.editorial_header {
 			margin-bottom: 20px;
@@ -205,7 +219,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 				display: block;
 				font-family: $font-accent;
 				color: $color-accent;
-				// ZMNIEJSZONO przydomek
 				font-size: clamp(1.1rem, 1.5vw, 1.3rem);
 				margin-bottom: 5px;
 			}
@@ -213,7 +226,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 			h2 {
 				font-family: $font-heading;
 				color: $color-secondary;
-				// ZMNIEJSZONO imię
 				font-size: clamp(1.7rem, 3.5vw, 2.6rem);
 				line-height: 1.1;
 				margin: 0;
@@ -229,7 +241,6 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 			span {
 				display: inline-flex;
 				align-items: center;
-				// ZMNIEJSZONO padding w odznakach
 				padding: 5px 14px;
 				border-radius: 30px;
 				font-size: 0.85rem;
@@ -262,21 +273,21 @@ $color-male: #7aa5b8; // Pastelowy, zgaszony niebieski
 		}
 
 		.editorial_desc {
-			// ZMNIEJSZONO wielkość tekstu w opisie
 			font-size: 0.95rem;
 			line-height: 1.7;
 			color: color.adjust($color-text-main, $lightness: 10%);
 			margin-bottom: 25px;
 		}
 
-		// --- MAŁA GALERIA ---
+		// ==========================================
+		// === MAŁA GALERIA (MINIATURKI)
+		// ==========================================
 		.editorial_mini_gallery {
 			display: flex;
 			gap: 12px;
 
 			.mini_gallery_item {
 				position: relative;
-				// ZMNIEJSZONO miniaturki w małej galerii
 				width: 65px;
 				height: 65px;
 				border-radius: 12px;

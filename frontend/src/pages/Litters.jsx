@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+// DODANE: Import Link z React Routera do obsługi klikalnych rodziców
+import { Link } from "react-router-dom";
 import { litterApi } from "../utils/api";
 import { ZoomIn, CalendarDays, Users } from "lucide-react";
 import ErrorState from "../components/ui/ErrorState";
 import Loader from "../components/ui/Loader";
-import Lightbox from "../components/ui/Lightbox"; // <-- IMPORT NASZEGO KOMPONENTU
+import Lightbox from "../components/ui/Lightbox";
 import "../styles/pages/litters.scss";
 
 const IMAGE_BASE_URL = (
@@ -17,7 +19,6 @@ const Litters = () => {
 
 	const [activeTab, setActiveTab] = useState("aktualny");
 
-	// Skrocony stan dla Lightboxa
 	const [lightbox, setLightbox] = useState({
 		isOpen: false,
 		images: [],
@@ -66,7 +67,6 @@ const Litters = () => {
 		(l) => l.status && l.status.toLowerCase() === "archiwum",
 	);
 
-	// --- FUNKCJE DLA KOMPONENTU LIGHTBOX ---
 	const openLightbox = (litter, startIndex) => {
 		const allImages = [];
 		if (litter.miniaturka) allImages.push(litter.miniaturka);
@@ -98,31 +98,87 @@ const Litters = () => {
 		}));
 	};
 
-	// --- RENDEROWANIE MIOTOW ---
+	// --- KOMPONENT POMOCNICZY DLA RODZICA ---
+	// Jeśli z bazy przyjdzie ID rodzica (np. litter.matka_id), awatar stanie się klikalny
+	const ParentProfile = ({ isMale, id, image, name }) => {
+		const content = (
+			<>
+				<img
+					src={image ? `${IMAGE_BASE_URL}${image}` : "/placeholder.jpg"}
+					alt={name || (isMale ? "Samiec" : "Samica")}
+					className="parent_avatar"
+				/>
+				<span className="parent_name">
+					{name || (isMale ? "Samiec" : "Samica")}
+				</span>
+			</>
+		);
+
+		const baseClass = `parent_col ${isMale ? "male" : "female"}`;
+
+		return id ? (
+			<Link
+				to={`/nasze-chomiki#${id}`}
+				className={baseClass}
+				style={{ textDecoration: "none" }}
+				title={`Przejdź do profilu: ${name}`}>
+				{content}
+			</Link>
+		) : (
+			<div className={baseClass}>{content}</div>
+		);
+	};
+
+	// --- RENDEROWANIE MIOTÓW ---
 	const renderEditorialList = (litterList) => (
 		<div className="litter_editorial_list">
 			{litterList.map((litter) => {
 				const galleryImages = litter.zdjecia || [];
+				const isPlanned = litter.status?.toLowerCase() === "planowany";
 
 				return (
 					<div className="litter_editorial_block" key={litter.id}>
 						<div
 							className="editorial_visual"
-							onClick={() => openLightbox(litter, 0)}>
-							<div className="main_image_wrapper">
-								<img
-									src={
-										litter.miniaturka
-											? `${IMAGE_BASE_URL}${litter.miniaturka}`
-											: "/placeholder.jpg"
-									}
-									alt={litter.nazwa}
-								/>
-								<div className="zoom_overlay">
-									<ZoomIn size={32} />
-									<span>Powieksz zdjecia</span>
+							onClick={() => !isPlanned && openLightbox(litter, 0)}>
+							{isPlanned ? (
+								<div className="planned_parents_wrapper">
+									<div className="parents_row">
+										{/* Wywołanie komponentu Samicy */}
+										<ParentProfile
+											isMale={false}
+											id={litter.matka_id}
+											image={litter.matka_zdjecie}
+											name={litter.matka_imie}
+										/>
+
+										<div className="heart_icon">♥</div>
+
+										{/* Wywołanie komponentu Samca */}
+										<ParentProfile
+											isMale={true}
+											id={litter.ojciec_id}
+											image={litter.ojciec_zdjecie}
+											name={litter.ojciec_imie}
+										/>
+									</div>
 								</div>
-							</div>
+							) : (
+								<div className="main_image_wrapper">
+									<img
+										src={
+											litter.miniaturka
+												? `${IMAGE_BASE_URL}${litter.miniaturka}`
+												: "/placeholder.jpg"
+										}
+										alt={litter.nazwa}
+									/>
+									<div className="zoom_overlay">
+										<ZoomIn size={32} />
+										<span>Powieksz zdjecia</span>
+									</div>
+								</div>
+							)}
 						</div>
 
 						<div className="editorial_content">
@@ -139,12 +195,13 @@ const Litters = () => {
 
 								<span className="badge_outline">
 									<Users size={16} className="badge_icon" />
+									{/* Tutaj też można by dodać linki do imion, ale na razie zostawiamy czysty tekst dla czytelności */}
 									{litter.matka_imie || "?"} x {litter.ojciec_imie || "?"}
 								</span>
 
 								<span className="badge_outline badge_date">
 									<CalendarDays size={16} className="badge_icon" />
-									{litter.status?.toLowerCase() === "planowany"
+									{isPlanned
 										? `Spodziewane: ${litter.spodziewany_termin || "Brak"}`
 										: `Urodzone: ${litter.data_urodzenia ? new Date(litter.data_urodzenia).toLocaleDateString("pl-PL") : "Brak"}`}
 								</span>
@@ -236,7 +293,6 @@ const Litters = () => {
 				</div>
 			</section>
 
-			{/* --- CZYSTY, REUZYWALNY KOMPONENT LIGHTBOXA --- */}
 			<Lightbox
 				isOpen={lightbox.isOpen}
 				images={lightbox.images}
